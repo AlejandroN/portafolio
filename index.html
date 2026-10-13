@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portafolio web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f6f6f4; color: #1c1c1c; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1040px, 100% - 32px); margin-inline: auto; padding: 64px 0; }
+    h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 8px; }
+    .lead { color: #666; margin-bottom: 40px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .card { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.06); transition: transform .2s; display: block; }
+    .card:hover { transform: translateY(-4px); }
+    .thumb { height: 160px; display: grid; place-items: center; font-size: 4rem; }
+    .info { padding: 20px 22px; }
+    .info h2 { font-size: 1.2rem; margin-bottom: 4px; }
+    .info p { color: #666; font-size: .93rem; }
+    .info span { display: inline-block; margin-top: 12px; font-weight: 600; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Páginas de muestra</h1>
+    <p class="lead">Ejemplos de páginas web para negocios locales. Toca una para verla.</p>
+    <div class="grid">
+      <a class="card" href="taqueria/"><div class="thumb" style="background:#1b1410">🌮</div><div class="info"><h2>Taquería La Brasa</h2><p>Menú con precios, promociones y pedidos por WhatsApp.</p><span style="color:#d7261e">Ver página →</span></div></a>
+      <a class="card" href="estetica/"><div class="thumb" style="background:#f6e7e2">💇‍♀️</div><div class="info"><h2>Estética Bella Luna</h2><p>Servicios, lista de precios, galería y citas.</p><span style="color:#a5655d">Ver página →</span></div></a>
+      <a class="card" href="taller/"><div class="thumb" style="background:#14171b">⚙️</div><div class="info"><h2>Taller Torque</h2><p>Servicios, garantía y formulario de cotización.</p><span style="color:#e06f05">Ver página →</span></div></a>
+    </div>
+  </div>
+</body>
+</html>

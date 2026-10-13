@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taquería La Brasa</title>
+  <meta name="description" content="Taquería La Brasa: tacos al pastor, suadero y campechanos hechos al momento. Pide por WhatsApp o visítanos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #d7261e;
+      --green: #1f7a3a;
+      --yellow: #ffc83d;
+      --ink: #1b1410;
+      --paper: #fff6e6;
+      --muted: #6e5e50;
+      --card: #ffffff;
+      --radius: 16px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Work Sans', system-ui, sans-serif; color: var(--ink); background: var(--paper); line-height: 1.6; overflow-x: hidden; }
+    h1, h2, h3, .logo { font-family: 'Anton', Impact, sans-serif; font-weight: 400; letter-spacing: .02em; line-height: 1.05; text-transform: uppercase; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, 100% - 32px); margin-inline: auto; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 999px; font-weight: 700; border: 3px solid var(--ink); transition: transform .15s, box-shadow .15s; }
+    .btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-yellow { background: var(--yellow); color: var(--ink); }
+
+    /* Papel picado */
+    .picado { height: 26px; background:
+      linear-gradient(135deg, transparent 50%, var(--paper) 50%) 0 0 / 26px 26px,
+      linear-gradient(225deg, transparent 50%, var(--paper) 50%) 0 0 / 26px 26px,
+      repeating-linear-gradient(90deg, var(--red) 0 120px, var(--green) 120px 240px, var(--yellow) 240px 360px); }
+
+    nav { position: sticky; top: 0; z-index: 50; background: var(--ink); color: #fff; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { font-size: 1.7rem; color: var(--yellow); }
+    .logo span { color: #fff; }
+    .nav-links { display: flex; gap: 28px; list-style: none; font-weight: 500; }
+    .nav-links a:hover { color: var(--yellow); }
+    .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+
+    .hero { background: var(--ink); color: #fff; padding: 64px 0 90px; position: relative; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; }
+    .tag { display: inline-block; background: var(--green); color: #fff; padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: .85rem; margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 18px; }
+    .hero h1 em { font-style: normal; color: var(--yellow); }
+    .hero p { color: #e9dccb; font-size: 1.15rem; max-width: 480px; margin-bottom: 30px; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-cta .btn { border-color: #fff; }
+    .hero-cta .btn:hover { box-shadow: 4px 4px 0 #fff; }
+    .hours-pill { margin-top: 28px; display: inline-flex; gap: 10px; align-items: center; color: #e9dccb; font-size: .95rem; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #3ddc6b; box-shadow: 0 0 0 4px rgba(61, 220, 107, .25); }
+    .trompo { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
+    .trompo .circle { width: 88%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ff7a3d, var(--red) 60%, #8f150f); display: grid; place-items: center; box-shadow: 0 0 0 14px rgba(255, 200, 61, .15), 0 30px 60px rgba(0,0,0,.45); }
+    .trompo .big { font-size: clamp(7rem, 17vw, 11rem); animation: wobble 3s ease-in-out infinite; }
+    .sticker { position: absolute; background: var(--yellow); color: var(--ink); font-family: 'Anton'; text-transform: uppercase; padding: 10px 16px; border-radius: 12px; border: 3px solid var(--ink); transform: rotate(-8deg); font-size: 1.1rem; }
+    .s1 { top: 6%; left: -2%; } .s2 { bottom: 2%; right: -2%; transform: rotate(6deg); background: #fff; }
+    @keyframes wobble { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+
+    section { padding: 90px 0; }
+    .head { text-align: center; max-width: 620px; margin: 0 auto 48px; }
+    .head h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+    .head h2 em { font-style: normal; color: var(--red); }
+    .head p { color: var(--muted); margin-top: 8px; }
+
+    /* Menú */
+    .menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px 40px; }
+    .item { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: baseline; padding: 16px 0; border-bottom: 2px dashed #e3cfb5; }
+    .item .emo { font-size: 1.8rem; align-self: center; }
+    .item h3 { font-size: 1.3rem; }
+    .item p { color: var(--muted); font-size: .92rem; }
+    .item .price { font-family: 'Anton'; font-size: 1.4rem; color: var(--red); }
+    .menu-note { text-align: center; color: var(--muted); margin-top: 28px; font-size: .9rem; }
+
+    /* Especial */
+    .special { background: var(--red); color: #fff; }
+    .special-box { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .special h2 { font-size: clamp(2.4rem, 6vw, 4rem); margin-bottom: 14px; }
+    .special p { font-size: 1.1rem; opacity: .95; margin-bottom: 24px; }
+    .combo { background: var(--paper); color: var(--ink); border-radius: 24px; padding: 32px; border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); transform: rotate(1.5deg); }
+    .combo .price { font-family: 'Anton'; font-size: 3.4rem; color: var(--red); line-height: 1; }
+    .combo ul { list-style: none; margin: 16px 0 0; }
+    .combo li { padding: 6px 0; font-weight: 500; }
+    .combo li::before { content: "🌮"; margin-right: 10px; }
+
+    /* Por qué */
+    .why { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .why .card { background: var(--card); border: 3px solid var(--ink); border-radius: var(--radius); padding: 28px; }
+    .why .emo { font-size: 2.4rem; margin-bottom: 10px; }
+    .why h3 { font-size: 1.4rem; margin-bottom: 6px; }
+    .why p { color: var(--muted); }
+
+    /* Visítanos */
+    .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .panel { background: var(--card); border-radius: 24px; padding: 32px; border: 3px solid var(--ink); }
+    .panel h3 { font-size: 1.6rem; margin-bottom: 14px; }
+    .hours { list-style: none; }
+    .hours li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee2d0; }
+    .hours li strong { font-weight: 700; }
+    .map { background: repeating-linear-gradient(45deg, #f3e6d1 0 14px, #efdfc5 14px 28px); border-radius: 16px; min-height: 180px; display: grid; place-items: center; text-align: center; color: var(--muted); margin-top: 16px; font-weight: 500; padding: 16px; }
+    .contact-list { list-style: none; display: grid; gap: 10px; margin-bottom: 22px; font-weight: 500; }
+
+    footer { background: var(--ink); color: #cdbfae; text-align: center; padding: 36px 0; font-size: .9rem; }
+    footer .logo { font-size: 2rem; display: inline-block; margin-bottom: 6px; }
+
+    .wa { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: #25d366; color: #fff; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; font-size: 1.7rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+
+    .btn:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+
+    @media (max-width: 900px) {
+      .hero-grid, .special-box, .visit { grid-template-columns: 1fr; }
+      .trompo { max-width: 380px; margin: 0 auto; }
+      .menu { grid-template-columns: 1fr; }
+      .why { grid-template-columns: 1fr; }
+      .combo { transform: none; }
+    }
+    @media (max-width: 720px) {
+      .menu-toggle { display: block; }
+      .nav-links { position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--ink); padding: 8px 16px 18px; display: none; }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 12px 0; }
+      .nav-inner > .btn { display: none; }
+      section { padding: 64px 0; }
+      .panel, .combo { padding: 24px; }
+      .sticker { font-size: .9rem; padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="logo">La <span>Brasa</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#menu">Menú</a></li>
+        <li><a href="#especial">Especial</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#visitanos">Visítanos</a></li>
+      </ul>
+      <a href="#visitanos" class="btn btn-yellow">Pedir ahora</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="tag">🔥 Al carbón desde 2010</span>
+        <h1>Tacos que <em>saben</em> a barrio</h1>
+        <p>Pastor del trompo, suadero jugoso y tortillas hechas a mano. Ven a comer o pide para llevar por WhatsApp.</p>
+        <div class="hero-cta">
+          <a href="#menu" class="btn btn-red">Ver menú</a>
+          <a href="#visitanos" class="btn btn-yellow">📲 Pedir por WhatsApp</a>
+        </div>
+        <div class="hours-pill"><span class="dot"></span> Abierto hoy de 6:00 p. m. a 1:00 a. m.</div>
+      </div>
+      <div class="trompo">
+        <div class="circle"><span class="big">🌮</span></div>
+        <div class="sticker s1">¡Al pastor!</div>
+        <div class="sticker s2">Salsa de la casa 🌶️</div>
+      </div>
+    </div>
+  </header>
+  <div class="picado" aria-hidden="true"></div>
+
+  <section id="menu">
+    <div class="container">
+      <div class="head">
+        <h2>Nuestro <em>menú</em></h2>
+        <p>Todo se prepara al momento. Precios por pieza.</p>
+      </div>
+      <div class="menu">
+        <div class="item"><span class="emo">🌮</span><div><h3>Al pastor</h3><p>Con piña, cebolla y cilantro</p></div><span class="price">$18</span></div>
+        <div class="item"><span class="emo">🥩</span><div><h3>Suadero</h3><p>Suave, dorado en su jugo</p></div><span class="price">$20</span></div>
+        <div class="item"><span class="emo">🔥</span><div><h3>Campechano</h3><p>Suadero con longaniza</p></div><span class="price">$22</span></div>
+        <div class="item"><span class="emo">🧀</span><div><h3>Gringa</h3><p>Harina, pastor y queso fundido</p></div><span class="price">$45</span></div>
+        <div class="item"><span class="emo">🌯</span><div><h3>Quesadilla</h3><p>Con la carne que elijas</p></div><span class="price">$40</span></div>
+        <div class="item"><span class="emo">🥤</span><div><h3>Aguas frescas</h3><p>Horchata, jamaica o tamarindo</p></div><span class="price">$25</span></div>
+      </div>
+      <p class="menu-note">Salsas, limones y cebollitas asadas sin costo en todas las órdenes.</p>
+    </div>
+  </section>
+
+  <section id="especial" class="special">
+    <div class="container special-box">
+      <div>
+        <h2>Martes de 2×1 al pastor</h2>
+        <p>Todos los martes, pide tus tacos al pastor y llévate el doble. Válido en local y para llevar.</p>
+        <a href="#visitanos" class="btn btn-yellow">Quiero mis tacos</a>
+      </div>
+      <div class="combo">
+        <strong>Combo familiar</strong>
+        <div class="price">$299</div>
+        <ul>
+          <li>20 tacos surtidos</li>
+          <li>Orden de cebollitas y nopales</li>
+          <li>Agua fresca de 2 litros</li>
+          <li>Salsas de la casa</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <div class="picado" aria-hidden="true"></div>
+
+  <section id="nosotros">
+    <div class="container">
+      <div class="head">
+        <h2>¿Por qué <em>La Brasa</em>?</h2>
+        <p>Una taquería de familia donde el sabor es lo primero.</p>
+      </div>
+      <div class="why">
+        <div class="card"><div class="emo">🔥</div><h3>Al carbón</h3><p>Nuestro pastor se cocina lento en trompo con carbón de verdad.</p></div>
+        <div class="card"><div class="emo">🫓</div><h3>Tortilla a mano</h3><p>Maíz nixtamalizado, tortillas recién hechas en cada orden.</p></div>
+        <div class="card"><div class="emo">🌶️</div><h3>Salsas propias</h3><p>Verde, roja y de habanero, preparadas cada día con receta de la casa.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visitanos" style="padding-top: 0;">
+    <div class="container visit">
+      <div class="panel">
+        <h3>Horario</h3>
+        <ul class="hours">
+          <li><span>Lunes a jueves</span><strong>6:00 p. m. – 12:00 a. m.</strong></li>
+          <li><span>Viernes y sábado</span><strong>6:00 p. m. – 2:00 a. m.</strong></li>
+          <li><span>Domingo</span><strong>5:00 p. m. – 11:00 p. m.</strong></li>
+        </ul>
+        <div class="map">📍 Av. Principal #123, Col. Centro<br>(aquí va el mapa de Google)</div>
+      </div>
+      <div class="panel">
+        <h3>Pide o reserva</h3>
+        <ul class="contact-list">
+          <li>📲 WhatsApp: (000) 000 0000</li>
+          <li>📞 Teléfono: (000) 000 0000</li>
+          <li>📸 @labrasa.tacos</li>
+        </ul>
+        <a href="#" class="btn btn-red">📲 Pedir por WhatsApp</a>
+        <p style="margin-top: 18px; color: var(--muted); font-size: .92rem;">Pedidos para eventos y fiestas: cotiza tu taquiza con 3 días de anticipación.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <a href="#" class="logo">La <span style="color:#fff">Brasa</span></a>
+      <p>Tacos al carbón · Para comer aquí o llevar</p>
+      <p style="margin-top: 10px; opacity: .7;">Sitio de muestra · Datos ficticios</p>
+    </div>
+  </footer>
+
+  <a href="#visitanos" class="wa" aria-label="Pedir por WhatsApp">💬</a>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  </script>
+</body>
+</html>

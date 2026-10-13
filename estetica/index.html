@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estética Bella Luna</title>
+  <meta name="description" content="Estética Bella Luna: cortes, color, uñas y tratamientos faciales. Agenda tu cita por WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #c9877f;
+      --rose-dark: #a5655d;
+      --blush: #f6e7e2;
+      --cream: #fcf8f5;
+      --ink: #3a2e2b;
+      --muted: #85736e;
+      --gold: #b89a63;
+      --line: #ead9d3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', system-ui, sans-serif; font-weight: 400; color: var(--ink); background: var(--cream); line-height: 1.7; overflow-x: hidden; }
+    h1, h2, h3, .logo { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.1; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, 100% - 32px); margin-inline: auto; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .28em; font-size: .75rem; color: var(--gold); font-weight: 500; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 30px; border-radius: 999px; font-weight: 500; letter-spacing: .04em; transition: background .25s, color .25s, transform .25s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-solid { background: var(--rose); color: #fff; }
+    .btn-solid:hover { background: var(--rose-dark); }
+    .btn-ghost { border: 1px solid var(--ink); }
+    .btn-ghost:hover { background: var(--ink); color: #fff; }
+
+    nav { position: sticky; top: 0; z-index: 50; background: rgba(252, 248, 245, .9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+    .logo { font-size: 1.9rem; font-style: italic; }
+    .logo span { color: var(--rose); }
+    .nav-links { display: flex; gap: 34px; list-style: none; font-size: .95rem; }
+    .nav-links a:hover { color: var(--rose); }
+    .menu-toggle { display: none; background: none; border: none; font-size: 1.7rem; cursor: pointer; color: var(--ink); }
+
+    .hero { padding: 70px 0 100px; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .hero h1 { font-size: clamp(3rem, 7vw, 5.4rem); margin: 18px 0 22px; }
+    .hero h1 em { color: var(--rose); }
+    .hero p { color: var(--muted); font-size: 1.1rem; max-width: 460px; margin-bottom: 34px; font-weight: 300; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .arch { position: relative; aspect-ratio: 4 / 5; border-radius: 999px 999px 24px 24px; background: linear-gradient(160deg, var(--blush), #e9c4bc 70%, var(--rose)); display: grid; place-items: center; overflow: hidden; }
+    .arch .big { font-size: clamp(7rem, 15vw, 10rem); filter: drop-shadow(0 16px 24px rgba(165, 101, 93, .35)); }
+    .arch::after { content: ""; position: absolute; inset: 18px; border: 1px solid rgba(255,255,255,.7); border-radius: 999px 999px 14px 14px; }
+    .rating { position: absolute; left: -24px; bottom: 40px; background: #fff; padding: 14px 20px; border-radius: 18px; box-shadow: 0 16px 40px rgba(58, 46, 43, .12); font-size: .9rem; }
+    .rating strong { font-family: 'Cormorant Garamond'; font-size: 1.6rem; display: block; line-height: 1; }
+    .rating span { color: var(--gold); }
+    .hero-visual { position: relative; max-width: 440px; justify-self: end; width: 100%; }
+
+    section { padding: 100px 0; }
+    .head { text-align: center; max-width: 600px; margin: 0 auto 56px; }
+    .head h2 { font-size: clamp(2.4rem, 5vw, 3.4rem); margin: 12px 0 10px; }
+    .head p { color: var(--muted); font-weight: 300; }
+
+    /* Servicios */
+    .services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .service { background: #fff; border-radius: 22px; padding: 34px 26px; text-align: center; border: 1px solid var(--line); transition: transform .3s, box-shadow .3s; }
+    .service:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(58, 46, 43, .08); }
+    .service .ico { width: 72px; height: 72px; border-radius: 50%; background: var(--blush); display: grid; place-items: center; font-size: 2rem; margin: 0 auto 18px; }
+    .service h3 { font-size: 1.6rem; margin-bottom: 8px; }
+    .service p { color: var(--muted); font-size: .93rem; font-weight: 300; }
+
+    /* Precios */
+    .prices { background: var(--blush); }
+    .price-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .price-col h3 { font-size: 1.8rem; font-style: italic; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #e3c7bf; }
+    .row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; }
+    .row span:last-child { font-weight: 500; color: var(--rose-dark); white-space: nowrap; }
+    .prices .note { text-align: center; color: var(--muted); margin-top: 36px; font-size: .9rem; }
+
+    /* Galería */
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 180px; gap: 14px; }
+    .ph { border-radius: 18px; display: grid; place-items: center; font-size: 3rem; color: #fff; position: relative; }
+    .ph small { position: absolute; bottom: 12px; left: 14px; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+    .ph.tall { grid-row: span 2; }
+    .ph.wide { grid-column: span 2; }
+    .g1 { background: linear-gradient(160deg, #d9a39a, #b9766d); }
+    .g2 { background: linear-gradient(160deg, #e8cbb5, #c9a27f); }
+    .g3 { background: linear-gradient(160deg, #cdb3c9, #9f7c99); }
+    .g4 { background: linear-gradient(160deg, #e6c2b6, #c58f80); }
+    .g5 { background: linear-gradient(160deg, #c9b79c, #a28965); }
+
+    /* Testimonios */
+    .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .quote { background: #fff; border-radius: 22px; padding: 32px; border: 1px solid var(--line); }
+    .quote p { font-family: 'Cormorant Garamond'; font-size: 1.35rem; font-style: italic; line-height: 1.4; margin-bottom: 16px; }
+    .quote .who { color: var(--muted); font-size: .9rem; }
+    .stars { color: var(--gold); letter-spacing: .15em; margin-bottom: 10px; }
+
+    /* Cita */
+    .booking { background: var(--ink); color: #f3e9e5; border-radius: 36px; padding: 64px 48px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+    .booking h2 { font-size: clamp(2.4rem, 5vw, 3.4rem); margin: 12px 0 16px; color: #fff; }
+    .booking p { color: #cdbdb7; font-weight: 300; margin-bottom: 26px; }
+    .info { list-style: none; display: grid; gap: 12px; }
+    .info li { display: flex; gap: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .info li b { font-weight: 500; color: #fff; min-width: 92px; }
+
+    footer { text-align: center; padding: 44px 0; color: var(--muted); font-size: .9rem; }
+    footer .logo { font-size: 2.2rem; display: inline-block; margin-bottom: 6px; color: var(--ink); }
+
+    .wa { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: #25d366; color: #fff; width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; box-shadow: 0 10px 24px rgba(37, 211, 102, .4); }
+
+    .btn:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--rose-dark); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+
+    @media (max-width: 960px) {
+      .hero-grid, .booking { grid-template-columns: 1fr; }
+      .hero-visual { justify-self: center; max-width: 360px; }
+      .services { grid-template-columns: repeat(2, 1fr); }
+      .price-cols, .quotes { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 720px) {
+      .menu-toggle { display: block; }
+      .nav-links { position: absolute; top: 76px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--cream); padding: 8px 16px 18px; border-bottom: 1px solid var(--line); display: none; }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 12px 0; }
+      .nav-inner > .btn { display: none; }
+      section { padding: 70px 0; }
+      .services { grid-template-columns: 1fr; }
+      .booking { padding: 40px 22px; border-radius: 26px; }
+      .rating { left: 8px; }
+      .gallery { grid-auto-rows: 140px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="logo">Bella <span>Luna</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#cita">Contacto</a></li>
+      </ul>
+      <a href="#cita" class="btn btn-solid">Agendar cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Estética &amp; spa</span>
+        <h1>Tu momento para sentirte <em>hermosa</em></h1>
+        <p>Cortes, color, uñas y tratamientos faciales en un espacio tranquilo, con productos profesionales y atención personalizada.</p>
+        <div class="hero-cta">
+          <a href="#cita" class="btn btn-solid">Agendar cita</a>
+          <a href="#precios" class="btn btn-ghost">Ver precios</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="arch"><span class="big">💇‍♀️</span></div>
+        <div class="rating"><strong>4.9</strong><span>★★★★★</span> 200+ reseñas</div>
+      </div>
+    </div>
+  </header>
+
+  <section id="servicios" style="padding-top: 20px;">
+    <div class="container">
+      <div class="head">
+        <span class="eyebrow">Servicios</span>
+        <h2>Cuidado de pies a cabeza</h2>
+        <p>Cada servicio comienza con una consulta para entender lo que buscas.</p>
+      </div>
+      <div class="services">
+        <div class="service"><div class="ico">✂️</div><h3>Corte y peinado</h3><p>Cortes de tendencia, peinados para eventos y alaciados.</p></div>
+        <div class="service"><div class="ico">🎨</div><h3>Color</h3><p>Tintes, mechas, balayage y matizados con cuidado del cabello.</p></div>
+        <div class="service"><div class="ico">💅</div><h3>Uñas</h3><p>Manicure, pedicure, gelish y uñas acrílicas.</p></div>
+        <div class="service"><div class="ico">🌿</div><h3>Faciales</h3><p>Limpieza profunda, hidratación y tratamientos de cejas y pestañas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="precios" class="prices">
+    <div class="container">
+      <div class="head">
+        <span class="eyebrow">Precios</span>
+        <h2>Lista de servicios</h2>
+      </div>
+      <div class="price-cols">
+        <div class="price-col">
+          <h3>Cabello</h3>
+          <div class="row"><span>Corte de dama</span><span>$250</span></div>
+          <div class="row"><span>Corte de caballero</span><span>$150</span></div>
+          <div class="row"><span>Tinte completo</span><span>desde $650</span></div>
+          <div class="row"><span>Balayage</span><span>desde $1,400</span></div>
+          <div class="row"><span>Peinado de evento</span><span>$450</span></div>
+        </div>
+        <div class="price-col">
+          <h3>Uñas</h3>
+          <div class="row"><span>Manicure</span><span>$180</span></div>
+          <div class="row"><span>Pedicure spa</span><span>$280</span></div>
+          <div class="row"><span>Gelish en manos</span><span>$250</span></div>
+          <div class="row"><span>Uñas acrílicas</span><span>desde $380</span></div>
+        </div>
+        <div class="price-col">
+          <h3>Rostro</h3>
+          <div class="row"><span>Limpieza facial</span><span>$450</span></div>
+          <div class="row"><span>Diseño de cejas</span><span>$150</span></div>
+          <div class="row"><span>Lifting de pestañas</span><span>$420</span></div>
+          <div class="row"><span>Maquillaje social</span><span>$600</span></div>
+        </div>
+      </div>
+      <p class="note">Los precios pueden variar según el largo y tipo de cabello. Pregunta por paquetes para novias.</p>
+    </div>
+  </section>
+
+  <section id="galeria">
+    <div class="container">
+      <div class="head">
+        <span class="eyebrow">Galería</span>
+        <h2>Nuestro trabajo</h2>
+        <p>Aquí van las fotos reales del salón y de los trabajos realizados.</p>
+      </div>
+      <div class="gallery">
+        <div class="ph g1 tall">💇‍♀️<small>Corte y color</small></div>
+        <div class="ph g2 wide">✨<small>Balayage</small></div>
+        <div class="ph g3">💅<small>Uñas</small></div>
+        <div class="ph g4">👰<small>Novias</small></div>
+        <div class="ph g5 wide">🌿<small>El salón</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="head">
+        <span class="eyebrow">Opiniones</span>
+        <h2>Lo que dicen nuestras clientas</h2>
+      </div>
+      <div class="quotes">
+        <div class="quote"><div class="stars">★★★★★</div><p>“Salí feliz con mi balayage, justo el tono que quería.”</p><span class="who">Clienta frecuente</span></div>
+        <div class="quote"><div class="stars">★★★★★</div><p>“Un lugar súper tranquilo y el trato es excelente.”</p><span class="who">Clienta de faciales</span></div>
+        <div class="quote"><div class="stars">★★★★★</div><p>“Me peinaron y maquillaron para mi boda. ¡Perfecto!”</p><span class="who">Novia 2025</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cita" style="padding-top: 0;">
+    <div class="container">
+      <div class="booking">
+        <div>
+          <span class="eyebrow">Agenda tu cita</span>
+          <h2>Te esperamos</h2>
+          <p>Escríbenos por WhatsApp con el servicio que te interesa y el día que prefieres. Te confirmamos en minutos.</p>
+          <a href="#" class="btn btn-solid">📲 Agendar por WhatsApp</a>
+        </div>
+        <ul class="info">
+          <li><b>Dirección</b><span>Calle de las Flores #45, Col. Centro</span></li>
+          <li><b>Horario</b><span>Martes a sábado 10:00 – 20:00<br>Domingo 10:00 – 15:00</span></li>
+          <li><b>WhatsApp</b><span>(000) 000 0000</span></li>
+          <li><b>Instagram</b><span>@bellaluna.estetica</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <a href="#" class="logo">Bella <span style="color: var(--rose)">Luna</span></a>
+      <p>Estética &amp; spa</p>
+      <p style="margin-top: 10px; opacity: .7;">Sitio de muestra · Datos ficticios</p>
+    </div>
+  </footer>
+
+  <a href="#cita" class="wa" aria-label="Agendar por WhatsApp">💬</a>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  </script>
+</body>
+</html>
