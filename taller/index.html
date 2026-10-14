@@ -60,7 +60,16 @@
     .stats span { color: var(--muted); font-size: .88rem; }
     .gauge { position: relative; aspect-ratio: 1; border-radius: 50%; background: conic-gradient(from 225deg, var(--accent) 0 200deg, var(--panel-2) 200deg 270deg, transparent 270deg); display: grid; place-items: center; max-width: 420px; justify-self: center; width: 100%; }
     .gauge::before { content: ""; position: absolute; inset: 22px; border-radius: 50%; background: var(--panel); border: 1px solid var(--line); }
-    .gauge .big { position: relative; font-size: clamp(6rem, 14vw, 9rem); animation: spin 14s linear infinite; }
+    .gauge img { position: absolute; inset: 22px; width: calc(100% - 44px); height: calc(100% - 44px); border-radius: 50%; object-fit: cover; }
+    .gauge { animation: glow 4s ease-in-out infinite; }
+    @keyframes glow { 0%,100% { filter: drop-shadow(0 0 0 rgba(255,138,31,0)); } 50% { filter: drop-shadow(0 0 28px rgba(255,138,31,.45)); } }
+
+    /* Fotos */
+    .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 28px; }
+    .shot { position: relative; aspect-ratio: 4 / 3; overflow: hidden; margin: 0; }
+    .shot img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.9); transition: transform .7s, filter .7s; }
+    .shot:hover img { transform: scale(1.06); filter: saturate(1.1); }
+    .shot figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 18px 14px; background: linear-gradient(to top, rgba(20,23,27,.9), transparent); font-family: 'Barlow Condensed'; font-weight: 700; text-transform: uppercase; font-size: 1.3rem; letter-spacing: .02em; }
     .gauge .chip { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); background: var(--accent); color: #14171b; font-weight: 700; padding: 6px 14px; border-radius: 4px; font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -72,7 +81,10 @@
     .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
     .svc { background: var(--panel); padding: 32px 28px; transition: background .2s; }
     .svc:hover { background: var(--panel-2); }
-    .svc .ico { font-size: 2rem; margin-bottom: 16px; }
+    .svc { padding: 0 0 30px; overflow: hidden; }
+    .svc .pic { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; margin-bottom: 22px; filter: saturate(.9); transition: transform .7s, filter .7s; }
+    .svc:hover .pic { transform: scale(1.05); filter: saturate(1.1); }
+    .svc h3, .svc p, .svc .from { margin-left: 26px; margin-right: 26px; }
     .svc h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
     .svc p { color: var(--muted); font-size: .95rem; }
     .svc .from { display: inline-block; margin-top: 14px; color: var(--accent); font-weight: 600; font-size: .9rem; }
@@ -129,7 +141,7 @@
     }
     @media (max-width: 720px) {
       section { padding: 68px 0; }
-      .services, .steps { grid-template-columns: 1fr; }
+      .services, .steps, .shots { grid-template-columns: 1fr; }
       .stats { gap: 22px; }
       .num { font-size: 2.1rem; }
       .guarantee, .box { padding: 26px 22px; }
@@ -169,7 +181,7 @@
         </div>
       </div>
       <div class="gauge">
-        <span class="big">⚙️</span>
+        <img src="img/taller-hero.jpg" alt="Mecánico trabajando bajo un auto en el taller">
         <span class="chip">Diagnóstico gratis</span>
       </div>
     </div>
@@ -184,12 +196,12 @@
         <p>Trabajamos con todas las marcas, nacionales e importadas.</p>
       </div>
       <div class="services">
-        <div class="svc"><div class="ico">🔧</div><h3>Afinación</h3><p>Bujías, filtros, limpieza de inyectores y revisión general.</p><span class="from">Desde $1,200</span></div>
-        <div class="svc"><div class="ico">🛑</div><h3>Frenos</h3><p>Balatas, discos, tambores y líquido de frenos.</p><span class="from">Desde $850</span></div>
-        <div class="svc"><div class="ico">🚙</div><h3>Suspensión</h3><p>Amortiguadores, rótulas, terminales y alineación.</p><span class="from">Desde $900</span></div>
-        <div class="svc"><div class="ico">💻</div><h3>Diagnóstico</h3><p>Escaneo por computadora para encontrar la falla exacta.</p><span class="from">Gratis con tu servicio</span></div>
-        <div class="svc"><div class="ico">🛢️</div><h3>Cambio de aceite</h3><p>Aceite y filtro de la calidad que tu motor requiere.</p><span class="from">Desde $650</span></div>
-        <div class="svc"><div class="ico">❄️</div><h3>Aire acondicionado</h3><p>Carga de gas, revisión de fugas y compresor.</p><span class="from">Desde $750</span></div>
+        <div class="svc"><img class="pic" src="img/taller-afinacion.jpg" alt="Afinación de motor" loading="lazy"><h3>Afinación</h3><p>Bujías, filtros, limpieza de inyectores y revisión general.</p><span class="from">Desde $1,200</span></div>
+        <div class="svc"><img class="pic" src="img/taller-frenos.jpg" alt="Cambio de frenos" loading="lazy"><h3>Frenos</h3><p>Balatas, discos, tambores y líquido de frenos.</p><span class="from">Desde $850</span></div>
+        <div class="svc"><img class="pic" src="img/taller-suspension.jpg" alt="Suspensión" loading="lazy"><h3>Suspensión</h3><p>Amortiguadores, rótulas, terminales y alineación.</p><span class="from">Desde $900</span></div>
+        <div class="svc"><img class="pic" src="img/taller-diagnostico.jpg" alt="Diagnóstico por computadora" loading="lazy"><h3>Diagnóstico</h3><p>Escaneo por computadora para encontrar la falla exacta.</p><span class="from">Gratis con tu servicio</span></div>
+        <div class="svc"><img class="pic" src="img/taller-aceite.jpg" alt="Cambio de aceite" loading="lazy"><h3>Cambio de aceite</h3><p>Aceite y filtro de la calidad que tu motor requiere.</p><span class="from">Desde $650</span></div>
+        <div class="svc"><img class="pic" src="img/taller-ac.jpg" alt="Aire acondicionado" loading="lazy"><h3>Aire acondicionado</h3><p>Carga de gas, revisión de fugas y compresor.</p><span class="from">Desde $750</span></div>
       </div>
     </div>
   </section>

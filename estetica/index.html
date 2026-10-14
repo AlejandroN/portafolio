@@ -49,9 +49,10 @@
     .hero p { color: var(--muted); font-size: 1.1rem; max-width: 460px; margin-bottom: 34px; font-weight: 300; }
     .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
     .arch { position: relative; aspect-ratio: 4 / 5; border-radius: 999px 999px 24px 24px; background: linear-gradient(160deg, var(--blush), #e9c4bc 70%, var(--rose)); display: grid; place-items: center; overflow: hidden; }
-    .arch .big { font-size: clamp(7rem, 15vw, 10rem); filter: drop-shadow(0 16px 24px rgba(165, 101, 93, .35)); }
-    .arch::after { content: ""; position: absolute; inset: 18px; border: 1px solid rgba(255,255,255,.7); border-radius: 999px 999px 14px 14px; }
-    .rating { position: absolute; left: -24px; bottom: 40px; background: #fff; padding: 14px 20px; border-radius: 18px; box-shadow: 0 16px 40px rgba(58, 46, 43, .12); font-size: .9rem; }
+    .arch img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: slowzoom 14s ease-in-out infinite alternate; }
+    @keyframes slowzoom { to { transform: scale(1.08); } }
+    .arch::after { content: ""; z-index: 1; position: absolute; inset: 18px; border: 1px solid rgba(255,255,255,.7); border-radius: 999px 999px 14px 14px; }
+    .rating { z-index: 2; position: absolute; left: -24px; bottom: 40px; background: #fff; padding: 14px 20px; border-radius: 18px; box-shadow: 0 16px 40px rgba(58, 46, 43, .12); font-size: .9rem; }
     .rating strong { font-family: 'Cormorant Garamond'; font-size: 1.6rem; display: block; line-height: 1; }
     .rating span { color: var(--gold); }
     .hero-visual { position: relative; max-width: 440px; justify-self: end; width: 100%; }
@@ -65,7 +66,10 @@
     .services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
     .service { background: #fff; border-radius: 22px; padding: 34px 26px; text-align: center; border: 1px solid var(--line); transition: transform .3s, box-shadow .3s; }
     .service:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(58, 46, 43, .08); }
-    .service .ico { width: 72px; height: 72px; border-radius: 50%; background: var(--blush); display: grid; place-items: center; font-size: 2rem; margin: 0 auto 18px; }
+    .service { padding: 0 0 30px; overflow: hidden; }
+    .service .pic { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; margin-bottom: 22px; transition: transform .8s; }
+    .service:hover .pic { transform: scale(1.05); }
+    .service h3, .service p { padding: 0 22px; }
     .service h3 { font-size: 1.6rem; margin-bottom: 8px; }
     .service p { color: var(--muted); font-size: .93rem; font-weight: 300; }
 
@@ -78,9 +82,12 @@
     .prices .note { text-align: center; color: var(--muted); margin-top: 36px; font-size: .9rem; }
 
     /* Galería */
-    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 180px; gap: 14px; }
-    .ph { border-radius: 18px; display: grid; place-items: center; font-size: 3rem; color: #fff; position: relative; }
-    .ph small { position: absolute; bottom: 12px; left: 14px; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 180px; gap: 14px; grid-auto-flow: dense; }
+    .ph { border-radius: 18px; color: #fff; position: relative; overflow: hidden; margin: 0; }
+    .ph img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s; }
+    .ph:hover img { transform: scale(1.06); }
+    .ph::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(58, 46, 43, .55), transparent 45%); }
+    .ph small { z-index: 1; position: absolute; bottom: 12px; left: 14px; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; }
     .ph.tall { grid-row: span 2; }
     .ph.wide { grid-column: span 2; }
     .g1 { background: linear-gradient(160deg, #d9a39a, #b9766d); }
@@ -161,7 +168,7 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="arch"><span class="big">💇‍♀️</span></div>
+        <div class="arch"><img src="img/estetica-hero.jpg" alt="Interior de la estética en tonos rosa y crema"></div>
         <div class="rating"><strong>4.9</strong><span>★★★★★</span> 200+ reseñas</div>
       </div>
     </div>
@@ -175,10 +182,10 @@
         <p>Cada servicio comienza con una consulta para entender lo que buscas.</p>
       </div>
       <div class="services">
-        <div class="service"><div class="ico">✂️</div><h3>Corte y peinado</h3><p>Cortes de tendencia, peinados para eventos y alaciados.</p></div>
-        <div class="service"><div class="ico">🎨</div><h3>Color</h3><p>Tintes, mechas, balayage y matizados con cuidado del cabello.</p></div>
-        <div class="service"><div class="ico">💅</div><h3>Uñas</h3><p>Manicure, pedicure, gelish y uñas acrílicas.</p></div>
-        <div class="service"><div class="ico">🌿</div><h3>Faciales</h3><p>Limpieza profunda, hidratación y tratamientos de cejas y pestañas.</p></div>
+        <div class="service"><img class="pic" src="img/estetica-corte.jpg" alt="Corte de cabello" loading="lazy"><h3>Corte y peinado</h3><p>Cortes de tendencia, peinados para eventos y alaciados.</p></div>
+        <div class="service"><img class="pic" src="img/estetica-balayage.jpg" alt="Color y balayage" loading="lazy"><h3>Color</h3><p>Tintes, mechas, balayage y matizados con cuidado del cabello.</p></div>
+        <div class="service"><img class="pic" src="img/estetica-unas.jpg" alt="Manicure" loading="lazy"><h3>Uñas</h3><p>Manicure, pedicure, gelish y uñas acrílicas.</p></div>
+        <div class="service"><img class="pic" src="img/estetica-facial.jpg" alt="Tratamiento facial" loading="lazy"><h3>Faciales</h3><p>Limpieza profunda, hidratación y tratamientos de cejas y pestañas.</p></div>
       </div>
     </div>
   </section>
@@ -222,14 +229,14 @@
       <div class="head">
         <span class="eyebrow">Galería</span>
         <h2>Nuestro trabajo</h2>
-        <p>Aquí van las fotos reales del salón y de los trabajos realizados.</p>
+        <p>Un vistazo a nuestro espacio y a algunos de nuestros trabajos.</p>
       </div>
       <div class="gallery">
-        <div class="ph g1 tall">💇‍♀️<small>Corte y color</small></div>
-        <div class="ph g2 wide">✨<small>Balayage</small></div>
-        <div class="ph g3">💅<small>Uñas</small></div>
-        <div class="ph g4">👰<small>Novias</small></div>
-        <div class="ph g5 wide">🌿<small>El salón</small></div>
+        <figure class="ph tall"><img src="img/estetica-balayage.jpg" alt="Cabello largo con balayage" loading="lazy"><small>Balayage</small></figure>
+        <figure class="ph wide"><img src="img/estetica-salon.jpg" alt="Interior del salón" loading="lazy"><small>El salón</small></figure>
+        <figure class="ph"><img src="img/estetica-unas.jpg" alt="Manicure de gelish rosa" loading="lazy"><small>Uñas</small></figure>
+        <figure class="ph"><img src="img/estetica-novia.jpg" alt="Peinado de novia con perlas" loading="lazy"><small>Novias</small></figure>
+        <figure class="ph wide"><img src="img/estetica-facial.jpg" alt="Tratamiento facial" loading="lazy"><small>Faciales</small></figure>
       </div>
     </div>
   </section>
