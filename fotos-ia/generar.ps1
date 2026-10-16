@@ -76,6 +76,28 @@ $Lista = @(
        prompt = "Close-up of a car's front suspension with new shock absorber and coil spring, wheel removed, car on a lift, workshop lighting, $Estilo" }
     @{ id = 'taller-ac';         pagina = 'taller'; ar = '4:3'; ancho = 700
        prompt = "Mechanic connecting air conditioning recharge gauges and hoses to a car engine bay, close-up, workshop lighting, $Estilo" }
+
+    # Generador de muestras de Alewox (tienda y consultorio)
+    @{ id = 'tienda-hero';     pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 1000
+       prompt = "Bright modern boutique store interior with clothing racks, wooden shelves with folded clothes and accessories, plants, warm natural light, nobody inside, $Estilo" }
+    @{ id = 'tienda-ropa';     pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Close-up of a clothing rack with neatly hung shirts and dresses in neutral colors in a boutique, soft light, $Estilo" }
+    @{ id = 'tienda-regalos';  pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Beautiful gift boxes wrapped with kraft paper and ribbons on a wooden counter of a small shop, candles and dried flowers, warm light, $Estilo" }
+    @{ id = 'tienda-accesorios'; pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Display of handbags, sunglasses and jewelry on minimalist shelves in a boutique, soft light, $Estilo" }
+    @{ id = 'tienda-bolsas';   pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Paper shopping bags with blank labels on a shop counter next to a card payment terminal, cozy boutique background blurred, $Estilo" }
+    @{ id = 'consultorio-hero';  pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 1000
+       prompt = "Modern bright medical clinic reception with white and light wood furniture, plants, clean minimalist design, nobody inside, $Estilo" }
+    @{ id = 'consultorio-consulta'; pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Doctor in white coat talking with a patient across a desk in a bright modern consulting room, faces not visible, hands and clipboard in focus, $Estilo" }
+    @{ id = 'consultorio-equipo';   pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Modern dental and medical examination chair in a spotless bright clinic room, soft daylight, nobody inside, $Estilo" }
+    @{ id = 'consultorio-sala';     pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Calm waiting room of a modern clinic with comfortable armchairs, plants and natural light, nobody inside, $Estilo" }
+    @{ id = 'consultorio-detalle';  pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Stethoscope, tablet and notebook on a clean white desk in a doctor's office, soft daylight, $Estilo" }
 )
 
 function Invocar-Fal($cuerpo) {
