@@ -133,7 +133,7 @@
           <div class="paso activo" data-paso="0">
             <span class="eyebrow">Nuevo · Hecho para Sonora</span>
             <h1 class="display">Corre el desierto.</h1>
-            <p>Ligero, fresco y con agarre para cualquier terreno. Desliza y míralo por todos lados.</p>
+            <p>Ligero, fresco y con agarre para cualquier terreno. Míralo por todos lados.</p>
             <div class="btns">
               <a href="#comprar" class="btn btn-terra">Lo quiero · $1,899</a>
             </div>
@@ -158,7 +158,7 @@
 
         <div class="visor">
           <model-viewer id="tenis" src="modelo/tenis.glb" alt="Tenis Duna Runner en 3D, color arena con detalles terracota y suela blanca"
-            camera-controls disable-zoom disable-pan touch-action="pan-y" interaction-prompt="none"
+            camera-controls disable-zoom disable-pan touch-action="pan-y" interaction-prompt="none" auto-rotate auto-rotate-delay="1500" rotation-per-second="40deg"
             camera-orbit="-30deg 78deg 105%" field-of-view="28deg" shadow-intensity="1.1" shadow-softness=".9"
             exposure="1.05" environment-image="neutral" loading="eager">
             <div class="cargando" slot="poster">Cargando 3D…</div>
@@ -166,7 +166,7 @@
           </model-viewer>
           <span class="arrastra" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4M17 8l4 4-4 4M3 12h18"/></svg>
-            Arrastra para girarlo
+            Arrástralo para verlo a tu ritmo
           </span>
         </div>
       </div>
@@ -240,8 +240,6 @@
   </footer>
 
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
     // WhatsApp de Alewox (52 + 10 dígitos). En una tienda real sería el número del negocio.
     const WHATSAPP = '526623373730';
@@ -253,41 +251,22 @@
       window.open(wa(`Hola Alejandro, vi el demo de Duna Runner (talla ${talla}) y quiero una página así para mi tienda.`), '_blank', 'noopener');
     });
 
-    const tenis = document.getElementById('tenis');
     const pasos = [...document.querySelectorAll('.paso')];
     const barras = [...document.querySelectorAll('.progreso i')];
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let actual = 0;
 
     function mostrarPaso(n) {
-      if (n === actual) return;
       actual = n;
       pasos.forEach((p, i) => p.classList.toggle('activo', i === n));
       barras.forEach((b, i) => b.classList.toggle('on', i <= n));
     }
 
-    // Ángulo y altura de cámara para cada momento del giro
-    function orbita(p) {
-      const giro = -30 + p * 360;
-      const altura = 78 - Math.sin(p * Math.PI) * 14; // baja un poco a la mitad para ver la suela de lado
-      return `${giro}deg ${altura}deg 105%`;
-    }
-
-    if (reduce || !window.gsap) {
-      tenis.setAttribute('auto-rotate', '');
+    // Las características cambian solas, al ritmo del giro (una vuelta = 9 s)
+    if (reduce) {
+      document.getElementById('tenis').removeAttribute('auto-rotate');
     } else {
-      gsap.registerPlugin(ScrollTrigger);
-      ScrollTrigger.create({
-        trigger: '.escena',
-        start: 'top top',
-        end: '+=280%',
-        pin: '.stage',
-        scrub: true,
-        onUpdate: self => {
-          tenis.cameraOrbit = orbita(self.progress);
-          mostrarPaso(Math.min(pasos.length - 1, Math.floor(self.progress * pasos.length)));
-        }
-      });
+      setInterval(() => { if (!document.hidden) mostrarPaso((actual + 1) % pasos.length); }, 3200);
     }
   </script>
 </body>

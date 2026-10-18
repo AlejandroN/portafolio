@@ -53,32 +53,23 @@
     .logo span { color: var(--ember); }
     .nav .btn { min-height: 44px; padding: 0 18px; }
 
-    /* Hero */
-    .hero { position: relative; padding: 56px 0 24px; text-align: center; overflow: hidden; }
-    .hero::before { content: ""; position: absolute; inset: auto 50% -30% auto; translate: 50% 0; width: 140vw; max-width: 1200px; aspect-ratio: 1; background: radial-gradient(circle, rgba(255, 90, 31, .22), transparent 60%); pointer-events: none; }
-    .hero h1 { position: relative; font-size: clamp(3.2rem, 15vw, 8.5rem); }
+    /* Hero: título + hamburguesa que se arma y desarma sola */
+    .hero { position: relative; padding: 32px 0 56px; overflow: hidden; }
+    .hero::before { content: ""; position: absolute; right: -20%; top: 10%; width: 900px; max-width: 120vw; aspect-ratio: 1; background: radial-gradient(circle, rgba(255, 90, 31, .2), transparent 60%); pointer-events: none; }
+    .hero-grid { position: relative; display: grid; grid-template-columns: .8fr 1.2fr; align-items: center; gap: 24px; min-height: calc(100svh - 110px); }
+    .hero h1 { font-size: clamp(3rem, 7vw, 6.4rem); margin-top: 10px; }
     .hero h1 em { font-style: normal; color: var(--ember); }
-    .hero p { position: relative; max-width: 30ch; margin: 18px auto 28px; color: var(--muted); font-size: 1.1rem; }
-    .hero-ctas { position: relative; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-    /* Anatomía: la hamburguesa que se desarma */
-    .anatomia { position: relative; }
-    .stage { position: relative; height: 100vh; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 72px 16px 24px; }
-    .stage-head { text-align: center; }
-    .stage-head h2 { font-size: clamp(1.9rem, 7vw, 3.4rem); }
-    .stage-head p { color: var(--muted); font-size: .95rem; }
-    .burger { opacity: 0; transition: opacity .4s; position: relative; width: min(440px, 64vw); max-width: 64vw; flex-shrink: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .hero p { max-width: 32ch; margin: 18px 0 28px; color: var(--muted); font-size: 1.1rem; }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .stage { position: relative; display: flex; justify-content: center; align-items: center; }
+    .burger { opacity: 0; transition: opacity .4s; position: relative; width: min(340px, calc(100% - 300px)); max-width: 64vw; flex-shrink: 0; }
     .burger.lista { opacity: 1; }
     .capa { position: absolute; left: 50%; margin-left: calc(var(--w) / -2); width: var(--w); }
     .capa img { width: 100%; height: auto; pointer-events: none; user-select: none; -webkit-user-drag: none; }
-    .etiqueta { position: absolute; left: calc(100% + 14px); top: 0; width: max-content; max-width: min(240px, 34vw); opacity: 0; pointer-events: none; padding-left: 14px; border-left: 2px solid var(--ember); }
-    .etiqueta strong { display: block; font-family: 'Anton', Impact, sans-serif; font-weight: 400; text-transform: uppercase; font-size: 1.05rem; letter-spacing: .03em; line-height: 1.1; }
-    .etiqueta span { display: block; color: var(--muted); font-size: .85rem; line-height: 1.35; }
-    .etiqueta.izq { left: auto; right: calc(100% + 14px); text-align: right; padding-left: 0; padding-right: 14px; border-left: 0; border-right: 2px solid var(--ember); }
-    .toggle { margin-top: 8px; }
-    .toggle svg { transition: transform .3s var(--ease); }
-    .toggle[aria-pressed="true"] svg { transform: rotate(180deg); }
-    .hint { color: var(--muted); font-size: .85rem; }
+    .etiqueta { position: absolute; left: calc(100% + 14px); top: 0; width: max-content; max-width: 132px; opacity: 0; pointer-events: none; padding-left: 12px; border-left: 2px solid var(--ember); }
+    .etiqueta strong { display: block; font-family: 'Anton', Impact, sans-serif; font-weight: 400; text-transform: uppercase; font-size: 1rem; letter-spacing: .03em; line-height: 1.1; }
+    .etiqueta span { display: block; color: var(--muted); font-size: .8rem; line-height: 1.3; }
+    .etiqueta.izq { left: auto; right: calc(100% + 14px); text-align: right; padding-left: 0; padding-right: 12px; border-left: 0; border-right: 2px solid var(--ember); }
 
     /* Menú */
     section.menu, section.visita { padding: 88px 0; }
@@ -109,13 +100,21 @@
     footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
     footer a { color: var(--text); }
 
-    /* Celular: etiquetas a un lado de la hamburguesa */
+    /* Tablet y celular: una columna, etiquetas a la derecha */
+    @media (max-width: 860px) {
+      .hero { padding-top: 24px; }
+      .hero-grid { grid-template-columns: 1fr; min-height: 0; gap: 8px; text-align: center; }
+      .hero h1 { font-size: clamp(2.5rem, 11vw, 4.2rem); }
+      .hero p { margin: 12px auto 20px; font-size: 1rem; }
+      .hero-ctas { justify-content: center; }
+      .stage { padding: 12px 0; }
+      .burger { width: min(340px, 52vw); }
+    }
     @media (max-width: 640px) {
-      .burger { max-width: 56vw; translate: -17vw 0; }
+      .burger { width: 56vw; translate: -17vw 0; }
       .etiqueta, .etiqueta.izq { left: calc(100% + 8px); right: auto; max-width: 30vw; text-align: left; padding-left: 10px; padding-right: 0; border-left: 2px solid var(--ember); border-right: 0; }
-      .etiqueta strong { font-size: .9rem; }
+      .etiqueta strong { font-size: .9rem; white-space: nowrap; }
       .etiqueta span { display: none; }
-      .etiqueta strong { white-space: nowrap; }
     }
 
     /* Sin animaciones: la hamburguesa aparece ya desarmada */
@@ -135,33 +134,20 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="wrap">
-        <span class="eyebrow">Hermosillo, Sonora</span>
-        <h1 class="display">Hecha a la <em>brasa</em>.<br>Capa por capa.</h1>
-        <p>Carne sellada al carbón, pan brioche del día y nada de atajos. Desliza para ver qué lleva.</p>
-        <div class="hero-ctas">
-          <a href="#anatomia" class="btn btn-ember">
-            Desármala
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-          </a>
-          <a href="#menu" class="btn btn-ghost">Ver el menú</a>
+    <section class="hero" aria-labelledby="titulo">
+      <div class="wrap hero-grid">
+        <div class="hero-texto">
+          <span class="eyebrow">Hermosillo, Sonora</span>
+          <h1 class="display" id="titulo">Hecha a la <em>brasa</em>.<br>Capa por capa.</h1>
+          <p>Carne sellada al carbón, pan brioche del día y nada de atajos. Así está hecha nuestra Brasa Clásica.</p>
+          <div class="hero-ctas">
+            <a href="#menu" class="btn btn-ember">Ver el menú</a>
+            <a href="#visita" class="btn btn-ghost">Cómo llegar</a>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <section class="anatomia" id="anatomia" aria-labelledby="anatomia-titulo">
-      <div class="stage">
-        <div class="stage-head">
-          <span class="eyebrow">La Brasa Clásica</span>
-          <h2 class="display" id="anatomia-titulo">Así está hecha</h2>
+        <div class="stage">
+          <div class="burger" id="burger" role="img" aria-label="Hamburguesa Brasa Clásica: pan brioche, lechuga, tomate, tocino, queso cheddar, carne a la brasa y pan tostado"></div>
         </div>
-        <div class="burger" id="burger" role="img" aria-label="Hamburguesa Brasa Clásica: pan brioche, lechuga, tomate, tocino, queso cheddar, carne a la brasa y pan tostado"></div>
-        <button class="btn btn-ghost toggle" id="toggle" type="button" aria-pressed="false" aria-controls="burger">
-          <span>Desarmar</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l4-4 4 4M8 17l4 4 4-4M12 3v18"/></svg>
-        </button>
-        <p class="hint" id="hint">Desliza hacia abajo o toca la hamburguesa</p>
       </div>
     </section>
 
@@ -197,7 +183,7 @@
       </div>
     </section>
 
-    <section class="visita">
+    <section class="visita" id="visita">
       <div class="wrap">
         <div class="head">
           <span class="eyebrow">Visítanos</span>
@@ -240,7 +226,6 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
     // WhatsApp de Alewox para el botón final (52 + 10 dígitos).
     const WHATSAPP = '526623373730';
@@ -261,7 +246,7 @@
     ];
 
     const burger = document.getElementById('burger');
-    const toggle = document.getElementById('toggle');
+    const texto = document.querySelector('.hero-texto');
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const capas = CAPAS.map((c, i) => {
@@ -277,17 +262,11 @@
       return { ...c, el, tag, img: el.querySelector('img') };
     });
 
-    // Espera a que carguen las capas para medir su alto real
-    Promise.all(capas.map(c => c.img.complete ? Promise.resolve() : new Promise(r => { c.img.onload = r; c.img.onerror = r; })))
-      .then(iniciar);
-
-    let tl, st;
-
-    // Calcula dónde va cada capa armada y cuánto se separa al desarmarse
     const SEP = .085; // separación entre capas al desarmarse (fracción del ancho)
+    const celular = () => innerWidth < 640;
 
+    // Calcula dónde va cada capa armada, cuánto se separa y ajusta el tamaño a la pantalla
     function medir() {
-      // 1) Mide con el ancho máximo permitido por el CSS
       burger.style.width = '';
       let ancho = burger.clientWidth;
       const calcular = () => {
@@ -302,16 +281,14 @@
         for (let i = capas.length - 1; i >= 0; i--) { bases[i] = piso; piso += altos[i] * (1 - capas[i].hundir); }
         return { altos, bases, alto: Math.max(...bases.map((b, i) => b + altos[i])) };
       };
-      // 2) Si desarmada no cabe en el espacio libre, la achica
-      const stage = burger.parentElement;
-      const ocupado = [...stage.children].filter(n => n !== burger && !n.hidden).reduce((t, n) => t + n.offsetHeight, 0);
-      const libre = stage.clientHeight - ocupado - 72 /* padding */ - 12 * stage.children.length - 20;
+      const sepMin = celular() ? 24 : 0;
+      const una = innerWidth <= 860; // una columna: el título va arriba de la hamburguesa
+      const libre = innerHeight - 150 - (una ? texto.offsetHeight + 40 : 0);
       const k = calcular().alto / ancho;
-      const ideal = Math.floor((libre - (innerWidth < 640 ? (capas.length - 1) * 24 : 0)) / (k + (capas.length - 1) * SEP));
-      if (ideal < ancho) { ancho = Math.max(160, ideal); burger.style.width = ancho + 'px'; }
+      const ideal = Math.floor((libre - (capas.length - 1) * sepMin) / (k + (capas.length - 1) * SEP));
+      if (ideal < ancho) { ancho = Math.max(170, ideal); burger.style.width = ancho + 'px'; }
       const m = calcular();
-      const sep = Math.max(ancho * SEP, innerWidth < 640 ? 24 : 0); // en celular, espacio mínimo para las etiquetas
-      // La caja reserva el alto de la hamburguesa desarmada; armada queda centrada en ella
+      const sep = Math.max(ancho * SEP, sepMin);
       const extra = (capas.length - 1) * sep;
       const altoCaja = m.alto + extra;
       burger.style.height = altoCaja + 'px';
@@ -323,6 +300,9 @@
       });
     }
 
+    Promise.all(capas.map(c => c.img.complete ? Promise.resolve() : new Promise(r => { c.img.onload = r; c.img.onerror = r; })))
+      .then(iniciar);
+
     function iniciar() {
       medir();
       burger.classList.add('lista');
@@ -330,46 +310,30 @@
       if (reduce || !window.gsap) {
         // Sin animación: se muestra desarmada con sus etiquetas
         capas.forEach(c => { c.el.style.transform = `translateY(${-c.desplaz}px)`; c.tag.style.opacity = 1; });
-        toggle.hidden = true;
-        document.getElementById('hint').hidden = true;
         return;
       }
 
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.config({ force3D: false }); // evita que algunos navegadores dejen de pintar capas
-      tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
-      capas.forEach((c, i) => {
-        tl.to(c.el, { y: () => -c.desplaz, duration: 1 }, 0);
-        tl.fromTo(c.tag, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: .35, ease: 'power1.out' }, .55 + i * .05);
+      gsap.config({ force3D: false });
+      const els = capas.map(c => c.el), tags = capas.map(c => c.tag);
+      gsap.set(tags, { x: -8 });
+      // Ciclo automático: armada → se desarma → muestra ingredientes → se vuelve a armar
+      const tl = gsap.timeline({ repeat: -1, delay: .8 });
+      tl.to(els, { y: i => -capas[i].desplaz, duration: 1.1, ease: 'power3.inOut', stagger: { each: .04, from: 'center' } })
+        .to(tags, { opacity: 1, x: 0, duration: .35, ease: 'power1.out', stagger: .07 }, '-=.35')
+        .to({}, { duration: 2.6 })
+        .to(tags, { opacity: 0, x: -8, duration: .25, ease: 'power1.in' })
+        .to(els, { y: 0, duration: .9, ease: 'power3.inOut', stagger: { each: .03, from: 'edges' } })
+        .to({}, { duration: 1.4 });
+
+      // Pausa cuando no se ve, para no gastar batería
+      new IntersectionObserver(([e]) => e.isIntersecting ? tl.play() : tl.pause()).observe(burger);
+
+      let t;
+      addEventListener('resize', () => {
+        clearTimeout(t);
+        t = setTimeout(() => { const p = tl.progress(); medir(); tl.invalidate().progress(p); }, 200);
       });
-
-      st = ScrollTrigger.create({
-        trigger: '.anatomia',
-        start: 'top top',
-        end: '+=120%',
-        pin: '.stage',
-        scrub: .6,
-        animation: tl,
-        invalidateOnRefresh: true,
-        onUpdate: self => actualizarBoton(self.progress > .5)
-      });
-
-      ScrollTrigger.addEventListener('refreshInit', medir);
     }
-
-    function actualizarBoton(desarmada) {
-      toggle.setAttribute('aria-pressed', desarmada);
-      toggle.querySelector('span').textContent = desarmada ? 'Armar' : 'Desarmar';
-    }
-
-    // Tocar la hamburguesa o el botón: lleva el scroll al inicio o al final de la animación
-    function alternar() {
-      if (!st) return;
-      const desarmada = st.progress > .5;
-      window.scrollTo({ top: desarmada ? st.start : st.end, behavior: 'smooth' });
-    }
-    burger.addEventListener('click', alternar);
-    toggle.addEventListener('click', alternar);
   </script>
 </body>
 </html>
