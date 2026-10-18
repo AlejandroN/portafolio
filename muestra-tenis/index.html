@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duna Runner | Tenis para correr el desierto</title>
+  <meta name="description" content="Tenis Duna Runner en 3D: gíralo con el dedo o con el scroll. Demo de página web interactiva hecha por Alewox.">
+  <meta name="theme-color" content="#f4ede3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <link rel="preload" as="fetch" href="modelo/tenis.glb" crossorigin>
+  <style>
+    :root {
+      --bg: #f4ede3;
+      --card: #fffaf3;
+      --ink: #1b1612;
+      --muted: #665a4e;
+      --line: rgba(27, 22, 18, .12);
+      --terra: #b8481a;
+      --terra-ink: #ffffff;
+      --sand: #e6d6c0;
+      --radius: 20px;
+      --ease: cubic-bezier(.2, .7, .2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Archivo', system-ui, sans-serif; line-height: 1.55; color: var(--ink); background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+    .display { font-family: 'Archivo Black', 'Archivo', sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: -.02em; line-height: .92; }
+    .eyebrow { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); }
+    :focus-visible { outline: 2px solid var(--terra); outline-offset: 3px; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 26px; border-radius: 999px; border: 0; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform .2s var(--ease), background-color .2s; }
+    .btn:active { transform: scale(.97); }
+    .btn-terra { background: var(--terra); color: var(--terra-ink); }
+    .btn-terra:hover { background: #9e3c13; }
+    .btn-line { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink); color: var(--ink); }
+    .btn-line:hover { background: var(--ink); color: var(--bg); }
+    .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .demo-bar { background: var(--ink); color: var(--bg); font-size: .85rem; font-weight: 500; text-align: center; padding: 8px 16px; }
+    .demo-bar a { text-decoration: underline; }
+
+    .nav { position: sticky; top: 0; z-index: 50; background: rgba(244, 237, 227, .85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-family: 'Archivo Black', sans-serif; font-size: 1.25rem; letter-spacing: -.02em; text-decoration: none; }
+    .logo span { color: var(--terra); }
+    .nav .btn { min-height: 44px; padding: 0 20px; }
+
+    /* Escena 3D: el tenis gira con el scroll */
+    .escena { position: relative; }
+    .stage { height: 100vh; height: 100svh; display: grid; grid-template-columns: 1fr 1.25fr; align-items: center; gap: 24px; padding: 64px 0 24px; }
+    .texto { position: relative; min-height: 360px; padding-top: 30px; }
+    .paso { position: absolute; inset: 30px auto auto 0; max-width: 460px; opacity: 0; transform: translateY(16px); transition: opacity .2s, transform .2s; pointer-events: none; }
+    .paso.activo { opacity: 1; transform: none; pointer-events: auto; transition: opacity .45s var(--ease) .2s, transform .45s var(--ease) .2s; }
+    .paso h1, .paso h2 { font-size: clamp(2.6rem, 6.2vw, 5.4rem); margin: 10px 0 16px; }
+    .paso p { color: var(--muted); font-size: 1.08rem; max-width: 34ch; }
+    .paso .btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+    .visor { position: relative; height: min(72vh, 640px); }
+    .visor::before { content: ""; position: absolute; inset: 8% 6%; border-radius: 50%; background: radial-gradient(closest-side, var(--sand), transparent); }
+    model-viewer { position: relative; width: 100%; height: 100%; --poster-color: transparent; --progress-bar-color: var(--terra); }
+    .cargando { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: .95rem; }
+    .progreso { position: absolute; top: 0; left: 0; display: flex; gap: 8px; }
+    .progreso i { width: 28px; height: 4px; border-radius: 4px; background: var(--line); transition: background-color .3s; }
+    .progreso i.on { background: var(--terra); }
+    .arrastra { position: absolute; left: 50%; bottom: 4%; translate: -50% 0; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); background: var(--card); padding: 8px 14px; border-radius: 999px; box-shadow: 0 6px 20px rgba(27, 22, 18, .08); }
+    .arrastra svg { width: 18px; height: 18px; }
+
+    /* Detalles */
+    section.detalles, section.comprar { padding: 96px 0; }
+    .head { margin-bottom: 36px; }
+    .head h2 { font-size: clamp(2.2rem, 7vw, 4rem); margin-top: 8px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .item { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+    .item svg { width: 28px; height: 28px; color: var(--terra); margin-bottom: 14px; }
+    .item h3 { font-size: 1.1rem; margin-bottom: 4px; }
+    .item p { color: var(--muted); font-size: .95rem; }
+
+    /* Comprar */
+    .compra { background: var(--ink); color: var(--bg); border-radius: 28px; padding: clamp(28px, 6vw, 56px); display: grid; gap: 28px; grid-template-columns: 1.2fr 1fr; align-items: center; }
+    .compra .eyebrow { color: #f0a77f; }
+    .compra h2 { font-size: clamp(2.2rem, 7vw, 4rem); margin: 8px 0 12px; }
+    .precio { font-family: 'Archivo Black', sans-serif; font-size: clamp(2rem, 6vw, 3rem); }
+    .precio small { font-family: 'Archivo', sans-serif; font-size: 1rem; font-weight: 500; opacity: .7; }
+    .tallas-label { font-weight: 700; margin-bottom: 10px; display: block; }
+    .tallas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; border: 0; }
+    .tallas label { position: relative; }
+    .tallas input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+    .tallas span { display: grid; place-items: center; min-width: 52px; min-height: 48px; border-radius: 12px; border: 1.5px solid rgba(244, 237, 227, .3); font-weight: 700; transition: background-color .2s, border-color .2s, color .2s; }
+    .tallas input:checked + span { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+    .tallas input:focus-visible + span { outline: 2px solid #f0a77f; outline-offset: 2px; }
+    .compra .btn-terra { width: 100%; }
+
+    .cierre { text-align: center; padding: 40px 0 88px; }
+    .cierre h2 { font-size: clamp(2rem, 7vw, 3.6rem); }
+    .cierre p { color: var(--muted); max-width: 36ch; margin: 12px auto 24px; }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: .9rem; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+
+    @media (max-width: 860px) {
+      .stage { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 0; padding: 72px 0 16px; }
+      .visor { order: -1; height: 46svh; }
+      .texto { min-height: 250px; text-align: center; padding-top: 22px; }
+      .paso { top: 22px; }
+      .paso { left: 0; right: 0; margin-inline: auto; }
+      .paso p { margin-inline: auto; }
+      .paso .btns { justify-content: center; }
+      .progreso { left: 50%; translate: -50% 0; }
+      .paso h1, .paso h2 { font-size: clamp(2.2rem, 11vw, 3.4rem); margin: 6px 0 10px; }
+      .compra { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Página de muestra · Duna Runner es una marca ficticia · Hecha por <a href="https://alejandron.github.io/alewox/">Alewox</a></div>
+
+  <header class="nav">
+    <div class="wrap">
+      <a href="#" class="logo" aria-label="Duna Runner, inicio">DUNA<span>/</span>RUNNER</a>
+      <a href="#comprar" class="btn btn-terra">Comprar</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="escena" aria-label="Tenis Duna Runner en 3D">
+      <div class="stage wrap">
+        <div class="texto">
+          <div class="paso activo" data-paso="0">
+            <span class="eyebrow">Nuevo · Hecho para Sonora</span>
+            <h1 class="display">Corre el desierto.</h1>
+            <p>Ligero, fresco y con agarre para cualquier terreno. Desliza y míralo por todos lados.</p>
+            <div class="btns">
+              <a href="#comprar" class="btn btn-terra">Lo quiero · $1,899</a>
+            </div>
+          </div>
+          <div class="paso" data-paso="1">
+            <span class="eyebrow">01 · Malla tejida</span>
+            <h2 class="display">Respira a 45°C.</h2>
+            <p>Su tejido abierto deja pasar el aire para que tu pie no se cocine en pleno verano.</p>
+          </div>
+          <div class="paso" data-paso="2">
+            <span class="eyebrow">02 · Espuma de rebote</span>
+            <h2 class="display">Cada paso devuelve.</h2>
+            <p>La suela de espuma absorbe el impacto y te impulsa en el siguiente paso.</p>
+          </div>
+          <div class="paso" data-paso="3">
+            <span class="eyebrow">03 · Suela de goma</span>
+            <h2 class="display">Agarre total.</h2>
+            <p>Goma natural con dibujo profundo para pavimento, tierra y grava.</p>
+          </div>
+          <div class="progreso" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+        </div>
+
+        <div class="visor">
+          <model-viewer id="tenis" src="modelo/tenis.glb" alt="Tenis Duna Runner en 3D, color arena con detalles terracota y suela blanca"
+            camera-controls disable-zoom disable-pan touch-action="pan-y" interaction-prompt="none"
+            camera-orbit="-30deg 78deg 105%" field-of-view="28deg" shadow-intensity="1.1" shadow-softness=".9"
+            exposure="1.05" environment-image="neutral" loading="eager">
+            <div class="cargando" slot="poster">Cargando 3D…</div>
+            <div slot="progress-bar"></div>
+          </model-viewer>
+          <span class="arrastra" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4M17 8l4 4-4 4M3 12h18"/></svg>
+            Arrastra para girarlo
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="detalles">
+      <div class="wrap">
+        <div class="head">
+          <span class="eyebrow">Detalles</span>
+          <h2 class="display">Pensado para el calor</h2>
+        </div>
+        <div class="grid">
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+            <h3>Fresco</h3><p>Malla tejida que deja circular el aire todo el día.</p>
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17c3 0 3-4 6-4s3 4 6 4 3-4 6-4"/><path d="M3 11c3 0 3-4 6-4s3 4 6 4 3-4 6-4"/></svg>
+            <h3>Ligero</h3><p>Solo 240 g por tenis para que no sientas el cansancio.</p>
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M6 16l3-8 3 5 2-3 4 6"/></svg>
+            <h3>Todo terreno</h3><p>Del gimnasio al cerro de la Campana sin cambiarte.</p>
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 4v5h-5"/></svg>
+            <h3>30 días de prueba</h3><p>Si no te convencen, los cambias sin costo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="comprar" id="comprar">
+      <div class="wrap">
+        <div class="compra">
+          <div>
+            <span class="eyebrow">Duna Runner</span>
+            <h2 class="display">Elige tu talla</h2>
+            <div class="precio">$1,899 <small>MXN · envío gratis en Hermosillo</small></div>
+          </div>
+          <form id="formCompra">
+            <span class="tallas-label" id="tallasLabel">Talla (MX)</span>
+            <fieldset class="tallas" aria-labelledby="tallasLabel">
+              <label><input type="radio" name="talla" value="24"><span>24</span></label>
+              <label><input type="radio" name="talla" value="25"><span>25</span></label>
+              <label><input type="radio" name="talla" value="26" checked><span>26</span></label>
+              <label><input type="radio" name="talla" value="27"><span>27</span></label>
+              <label><input type="radio" name="talla" value="28"><span>28</span></label>
+              <label><input type="radio" name="talla" value="29"><span>29</span></label>
+            </fieldset>
+            <button class="btn btn-terra" type="submit">Pedir por WhatsApp</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="cierre">
+      <div class="wrap">
+        <h2 class="display">¿Quieres tu producto en 3D?</h2>
+        <p>Así se puede ver la página de tu tienda: tus productos girando en la mano de tus clientes.</p>
+        <a class="btn btn-line" id="waAlewox" href="https://alejandron.github.io/alewox/" target="_blank" rel="noopener">Quiero una página así</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Duna Runner es una marca ficticia creada como muestra.</span>
+      <span>Diseño y desarrollo: <a href="https://alejandron.github.io/alewox/">Alewox</a></span>
+    </div>
+  </footer>
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    // WhatsApp de Alewox (52 + 10 dígitos). En una tienda real sería el número del negocio.
+    const WHATSAPP = '526623373730';
+    const wa = texto => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}`;
+    document.getElementById('waAlewox').href = wa('Hola Alejandro, vi el demo de Duna Runner y quiero una página así para mi tienda.');
+    document.getElementById('formCompra').addEventListener('submit', e => {
+      e.preventDefault();
+      const talla = new FormData(e.target).get('talla');
+      window.open(wa(`Hola Alejandro, vi el demo de Duna Runner (talla ${talla}) y quiero una página así para mi tienda.`), '_blank', 'noopener');
+    });
+
+    const tenis = document.getElementById('tenis');
+    const pasos = [...document.querySelectorAll('.paso')];
+    const barras = [...document.querySelectorAll('.progreso i')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let actual = 0;
+
+    function mostrarPaso(n) {
+      if (n === actual) return;
+      actual = n;
+      pasos.forEach((p, i) => p.classList.toggle('activo', i === n));
+      barras.forEach((b, i) => b.classList.toggle('on', i <= n));
+    }
+
+    // Ángulo y altura de cámara para cada momento del giro
+    function orbita(p) {
+      const giro = -30 + p * 360;
+      const altura = 78 - Math.sin(p * Math.PI) * 14; // baja un poco a la mitad para ver la suela de lado
+      return `${giro}deg ${altura}deg 105%`;
+    }
+
+    if (reduce || !window.gsap) {
+      tenis.setAttribute('auto-rotate', '');
+    } else {
+      gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.create({
+        trigger: '.escena',
+        start: 'top top',
+        end: '+=280%',
+        pin: '.stage',
+        scrub: true,
+        onUpdate: self => {
+          tenis.cameraOrbit = orbita(self.progress);
+          mostrarPaso(Math.min(pasos.length - 1, Math.floor(self.progress * pasos.length)));
+        }
+      });
+    }
+  </script>
+</body>
+</html>
