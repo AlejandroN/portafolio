@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brasa Burger | Hamburguesas a la brasa en Hermosillo</title>
+  <meta name="description" content="Hamburguesas artesanales a la brasa, armadas capa por capa. Demo de página web interactiva hecha por Alewox.">
+  <meta name="theme-color" content="#12100e">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="img/capa-pan-arriba.webp">
+  <style>
+    :root {
+      --bg: #12100e;
+      --surface: #1c1915;
+      --surface-2: #26211c;
+      --text: #f6eee4;
+      --muted: #bcae9e;
+      --line: rgba(246, 238, 228, .12);
+      --ember: #ff5a1f;
+      --ember-ink: #1a0b04;
+      --gold: #f2b33d;
+      --radius: 18px;
+      --ease: cubic-bezier(.2, .7, .2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Karla', system-ui, sans-serif; font-size: 1rem; line-height: 1.55; color: var(--text); background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    .wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+    .display { font-family: 'Anton', Impact, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .01em; line-height: .95; }
+    .eyebrow { display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 24px; border-radius: 999px; border: 0; font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform .2s var(--ease), background-color .2s, color .2s; }
+    .btn:active { transform: scale(.97); }
+    .btn-ember { background: var(--ember); color: var(--ember-ink); }
+    .btn-ember:hover { background: #ff7440; }
+    .btn-ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1.5px var(--line); }
+    .btn-ghost:hover { box-shadow: inset 0 0 0 1.5px var(--text); }
+    .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    /* Aviso de demo */
+    .demo-bar { background: var(--gold); color: #241603; font-size: .85rem; font-weight: 700; text-align: center; padding: 8px 16px; }
+    .demo-bar a { text-decoration: underline; }
+
+    /* Nav */
+    .nav { position: sticky; top: 0; z-index: 50; background: rgba(18, 16, 14, .82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-family: 'Anton', Impact, sans-serif; font-size: 1.5rem; letter-spacing: .02em; text-decoration: none; }
+    .logo span { color: var(--ember); }
+    .nav .btn { min-height: 44px; padding: 0 18px; }
+
+    /* Hero */
+    .hero { position: relative; padding: 56px 0 24px; text-align: center; overflow: hidden; }
+    .hero::before { content: ""; position: absolute; inset: auto 50% -30% auto; translate: 50% 0; width: 140vw; max-width: 1200px; aspect-ratio: 1; background: radial-gradient(circle, rgba(255, 90, 31, .22), transparent 60%); pointer-events: none; }
+    .hero h1 { position: relative; font-size: clamp(3.2rem, 15vw, 8.5rem); }
+    .hero h1 em { font-style: normal; color: var(--ember); }
+    .hero p { position: relative; max-width: 30ch; margin: 18px auto 28px; color: var(--muted); font-size: 1.1rem; }
+    .hero-ctas { position: relative; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* Anatomía: la hamburguesa que se desarma */
+    .anatomia { position: relative; }
+    .stage { position: relative; height: 100vh; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 72px 16px 24px; }
+    .stage-head { text-align: center; }
+    .stage-head h2 { font-size: clamp(1.9rem, 7vw, 3.4rem); }
+    .stage-head p { color: var(--muted); font-size: .95rem; }
+    .burger { opacity: 0; transition: opacity .4s; position: relative; width: min(440px, 64vw); max-width: 64vw; flex-shrink: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .burger.lista { opacity: 1; }
+    .capa { position: absolute; left: 50%; margin-left: calc(var(--w) / -2); width: var(--w); }
+    .capa img { width: 100%; height: auto; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+    .etiqueta { position: absolute; left: calc(100% + 14px); top: 0; width: max-content; max-width: min(240px, 34vw); opacity: 0; pointer-events: none; padding-left: 14px; border-left: 2px solid var(--ember); }
+    .etiqueta strong { display: block; font-family: 'Anton', Impact, sans-serif; font-weight: 400; text-transform: uppercase; font-size: 1.05rem; letter-spacing: .03em; line-height: 1.1; }
+    .etiqueta span { display: block; color: var(--muted); font-size: .85rem; line-height: 1.35; }
+    .etiqueta.izq { left: auto; right: calc(100% + 14px); text-align: right; padding-left: 0; padding-right: 14px; border-left: 0; border-right: 2px solid var(--ember); }
+    .toggle { margin-top: 8px; }
+    .toggle svg { transition: transform .3s var(--ease); }
+    .toggle[aria-pressed="true"] svg { transform: rotate(180deg); }
+    .hint { color: var(--muted); font-size: .85rem; }
+
+    /* Menú */
+    section.menu, section.visita { padding: 88px 0; }
+    .head { margin-bottom: 36px; }
+    .head h2 { font-size: clamp(2.4rem, 9vw, 4.4rem); margin-top: 6px; }
+    .cards { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+    .card img { aspect-ratio: 1; width: 100%; object-fit: cover; }
+    .card-body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .card h3 { font-family: 'Anton', Impact, sans-serif; font-weight: 400; text-transform: uppercase; font-size: 1.45rem; letter-spacing: .02em; }
+    .precio { font-weight: 700; color: var(--gold); font-size: 1.15rem; white-space: nowrap; }
+    .card p { color: var(--muted); font-size: .95rem; }
+
+    /* Visita */
+    .visita-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .dato { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: flex; gap: 14px; }
+    .dato svg { width: 26px; height: 26px; color: var(--ember); flex-shrink: 0; margin-top: 2px; }
+    .dato strong { display: block; font-size: 1.05rem; }
+    .dato span { color: var(--muted); }
+
+    /* Cierre */
+    .cierre { text-align: center; padding: 96px 0 64px; background: linear-gradient(180deg, var(--bg), #1f130b); }
+    .cierre h2 { font-size: clamp(2.6rem, 11vw, 6rem); }
+    .cierre h2 em { font-style: normal; color: var(--ember); }
+    .cierre p { color: var(--muted); max-width: 34ch; margin: 14px auto 26px; }
+    footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: .9rem; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+    footer a { color: var(--text); }
+
+    /* Celular: etiquetas a un lado de la hamburguesa */
+    @media (max-width: 640px) {
+      .burger { max-width: 56vw; translate: -17vw 0; }
+      .etiqueta, .etiqueta.izq { left: calc(100% + 8px); right: auto; max-width: 30vw; text-align: left; padding-left: 10px; padding-right: 0; border-left: 2px solid var(--ember); border-right: 0; }
+      .etiqueta strong { font-size: .9rem; }
+      .etiqueta span { display: none; }
+      .etiqueta strong { white-space: nowrap; }
+    }
+
+    /* Sin animaciones: la hamburguesa aparece ya desarmada */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Página de muestra · Brasa Burger es una marca ficticia · Hecha por <a href="https://alejandron.github.io/alewox/">Alewox</a></div>
+
+  <header class="nav">
+    <div class="wrap">
+      <a href="#" class="logo" aria-label="Brasa Burger, inicio">BRASA<span>.</span>BURGER</a>
+      <a href="#menu" class="btn btn-ember">Ver menú</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow">Hermosillo, Sonora</span>
+        <h1 class="display">Hecha a la <em>brasa</em>.<br>Capa por capa.</h1>
+        <p>Carne sellada al carbón, pan brioche del día y nada de atajos. Desliza para ver qué lleva.</p>
+        <div class="hero-ctas">
+          <a href="#anatomia" class="btn btn-ember">
+            Desármala
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+          <a href="#menu" class="btn btn-ghost">Ver el menú</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="anatomia" id="anatomia" aria-labelledby="anatomia-titulo">
+      <div class="stage">
+        <div class="stage-head">
+          <span class="eyebrow">La Brasa Clásica</span>
+          <h2 class="display" id="anatomia-titulo">Así está hecha</h2>
+        </div>
+        <div class="burger" id="burger" role="img" aria-label="Hamburguesa Brasa Clásica: pan brioche, lechuga, tomate, tocino, queso cheddar, carne a la brasa y pan tostado"></div>
+        <button class="btn btn-ghost toggle" id="toggle" type="button" aria-pressed="false" aria-controls="burger">
+          <span>Desarmar</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l4-4 4 4M8 17l4 4 4-4M12 3v18"/></svg>
+        </button>
+        <p class="hint" id="hint">Desliza hacia abajo o toca la hamburguesa</p>
+      </div>
+    </section>
+
+    <section class="menu" id="menu">
+      <div class="wrap">
+        <div class="head">
+          <span class="eyebrow">Menú</span>
+          <h2 class="display">Las favoritas</h2>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <img src="img/menu-clasica.jpg" alt="Hamburguesa doble con dos carnes, queso cheddar, lechuga y tomate" width="700" height="700" loading="lazy">
+            <div class="card-body">
+              <div class="card-top"><h3>Doble Brasa</h3><span class="precio">$169</span></div>
+              <p>Dos carnes a la brasa, doble cheddar, lechuga, tomate y salsa de la casa.</p>
+            </div>
+          </article>
+          <article class="card">
+            <img src="img/menu-doble.jpg" alt="Hamburguesa triple con tres carnes, queso derretido y tocino" width="700" height="700" loading="lazy">
+            <div class="card-body">
+              <div class="card-top"><h3>Triple Brasa</h3><span class="precio">$219</span></div>
+              <p>Tres carnes, cheddar fundido y tocino ahumado. Solo para valientes.</p>
+            </div>
+          </article>
+          <article class="card">
+            <img src="img/menu-papas.jpg" alt="Papas a la francesa doradas en canasta" width="700" height="700" loading="lazy">
+            <div class="card-body">
+              <div class="card-top"><h3>Papas Brasa</h3><span class="precio">$59</span></div>
+              <p>Crujientes por fuera, suaves por dentro. Pídelas con mayo de chipotle.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="visita">
+      <div class="wrap">
+        <div class="head">
+          <span class="eyebrow">Visítanos</span>
+          <h2 class="display">Te esperamos</h2>
+        </div>
+        <div class="visita-grid">
+          <div class="dato">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <div><strong>Ubicación</strong><span>Hermosillo, Sonora (dirección de muestra)</span></div>
+          </div>
+          <div class="dato">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <div><strong>Horario</strong><span>Martes a domingo · 6:00 pm a 11:00 pm</span></div>
+          </div>
+          <div class="dato">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h13l-1.5 9H4.5L3 7z"/><path d="M16 10h3l2 4-2 2h-4.4"/><circle cx="7" cy="19" r="1.5"/><circle cx="14" cy="19" r="1.5"/></svg>
+            <div><strong>A domicilio</strong><span>Pide por WhatsApp y te la llevamos caliente</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cierre">
+      <div class="wrap">
+        <h2 class="display">¿Se te <em>antojó</em>?</h2>
+        <p>Así se puede ver la página de tu negocio: interactiva, rápida en el celular y lista para recibir pedidos.</p>
+        <a class="btn btn-ember" id="waAlewox" href="https://alejandron.github.io/alewox/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>
+          Quiero una página así
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Brasa Burger es una marca ficticia creada como muestra.</span>
+      <span>Diseño y desarrollo: <a href="https://alejandron.github.io/alewox/">Alewox</a></span>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    // WhatsApp de Alewox para el botón final (52 + 10 dígitos).
+    const WHATSAPP = '526623373730';
+    document.getElementById('waAlewox').href =
+      `https://wa.me/${WHATSAPP}?text=${encodeURIComponent('Hola Alejandro, vi el demo de Brasa Burger y quiero una página así para mi negocio.')}`;
+
+    // Capas de arriba hacia abajo.
+    // ancho: % del ancho de la hamburguesa · hundir: cuánto se mete la capa de arriba en esta (fracción del alto de esta)
+    // aplanar: encoge el alto de la foto para darle perspectiva de lado (1 = sin cambio)
+    const CAPAS = [
+      { id: 'pan-arriba', nombre: 'Pan brioche',      desc: 'Horneado cada día y dorado en mantequilla.', ancho: 100, hundir: 0 },
+      { id: 'lechuga',    nombre: 'Lechuga',          desc: 'Fresca y crujiente.',                        ancho: 108, hundir: .55 },
+      { id: 'tomate',     nombre: 'Tomate',           desc: 'Rodajas gruesas de tomate maduro.',          ancho: 92,  hundir: .50, aplanar: .32 },
+      { id: 'tocino',     nombre: 'Tocino ahumado',   desc: 'Bien dorado, como debe ser.',                ancho: 94,  hundir: .50 },
+      { id: 'queso',      nombre: 'Queso cheddar',    desc: 'Fundido justo encima de la carne.',          ancho: 104, hundir: .55, aplanar: .6 },
+      { id: 'carne',      nombre: 'Carne a la brasa', desc: '180 g de res sellada al carbón.',            ancho: 98,  hundir: .5 },
+      { id: 'pan-abajo',  nombre: 'Pan tostado',      desc: 'Para que aguante todo el jugo.',             ancho: 100, hundir: .38 }
+    ];
+
+    const burger = document.getElementById('burger');
+    const toggle = document.getElementById('toggle');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const capas = CAPAS.map((c, i) => {
+      const el = document.createElement('div');
+      el.className = 'capa';
+      el.style.setProperty('--w', c.ancho + '%');
+      el.style.zIndex = CAPAS.length - i;
+      el.innerHTML = `<img src="img/capa-${c.id}.webp" alt="" decoding="async">`;
+      const tag = document.createElement('div');
+      tag.className = 'etiqueta' + (i % 2 ? ' izq' : '');
+      tag.innerHTML = `<strong>${c.nombre}</strong><span>${c.desc}</span>`;
+      burger.append(el, tag);
+      return { ...c, el, tag, img: el.querySelector('img') };
+    });
+
+    // Espera a que carguen las capas para medir su alto real
+    Promise.all(capas.map(c => c.img.complete ? Promise.resolve() : new Promise(r => { c.img.onload = r; c.img.onerror = r; })))
+      .then(iniciar);
+
+    let tl, st;
+
+    // Calcula dónde va cada capa armada y cuánto se separa al desarmarse
+    const SEP = .085; // separación entre capas al desarmarse (fracción del ancho)
+
+    function medir() {
+      // 1) Mide con el ancho máximo permitido por el CSS
+      burger.style.width = '';
+      let ancho = burger.clientWidth;
+      const calcular = () => {
+        capas.forEach(c => {
+          if (c.aplanar && c.img.naturalWidth) {
+            c.img.style.height = c.el.clientWidth * c.img.naturalHeight / c.img.naturalWidth * c.aplanar + 'px';
+          }
+        });
+        const altos = capas.map(c => c.el.offsetHeight || ancho * c.ancho / 100 * .35);
+        const bases = new Array(capas.length);
+        let piso = 0;
+        for (let i = capas.length - 1; i >= 0; i--) { bases[i] = piso; piso += altos[i] * (1 - capas[i].hundir); }
+        return { altos, bases, alto: Math.max(...bases.map((b, i) => b + altos[i])) };
+      };
+      // 2) Si desarmada no cabe en el espacio libre, la achica
+      const stage = burger.parentElement;
+      const ocupado = [...stage.children].filter(n => n !== burger && !n.hidden).reduce((t, n) => t + n.offsetHeight, 0);
+      const libre = stage.clientHeight - ocupado - 72 /* padding */ - 12 * stage.children.length - 20;
+      const k = calcular().alto / ancho;
+      const ideal = Math.floor((libre - (innerWidth < 640 ? (capas.length - 1) * 24 : 0)) / (k + (capas.length - 1) * SEP));
+      if (ideal < ancho) { ancho = Math.max(160, ideal); burger.style.width = ancho + 'px'; }
+      const m = calcular();
+      const sep = Math.max(ancho * SEP, innerWidth < 640 ? 24 : 0); // en celular, espacio mínimo para las etiquetas
+      // La caja reserva el alto de la hamburguesa desarmada; armada queda centrada en ella
+      const extra = (capas.length - 1) * sep;
+      const altoCaja = m.alto + extra;
+      burger.style.height = altoCaja + 'px';
+      capas.forEach((c, i) => {
+        c.el.style.bottom = (m.bases[i] + extra / 2) + 'px';
+        c.desplaz = ((capas.length - 1) / 2 - i) * sep; // las de arriba suben, las de abajo bajan
+        c.tag.style.top = (altoCaja - extra / 2 - m.bases[i] - m.altos[i] / 2 - c.desplaz) + 'px';
+        c.tag.style.translate = '0 -50%';
+      });
+    }
+
+    function iniciar() {
+      medir();
+      burger.classList.add('lista');
+
+      if (reduce || !window.gsap) {
+        // Sin animación: se muestra desarmada con sus etiquetas
+        capas.forEach(c => { c.el.style.transform = `translateY(${-c.desplaz}px)`; c.tag.style.opacity = 1; });
+        toggle.hidden = true;
+        document.getElementById('hint').hidden = true;
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.config({ force3D: false }); // evita que algunos navegadores dejen de pintar capas
+      tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
+      capas.forEach((c, i) => {
+        tl.to(c.el, { y: () => -c.desplaz, duration: 1 }, 0);
+        tl.fromTo(c.tag, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: .35, ease: 'power1.out' }, .55 + i * .05);
+      });
+
+      st = ScrollTrigger.create({
+        trigger: '.anatomia',
+        start: 'top top',
+        end: '+=120%',
+        pin: '.stage',
+        scrub: .6,
+        animation: tl,
+        invalidateOnRefresh: true,
+        onUpdate: self => actualizarBoton(self.progress > .5)
+      });
+
+      ScrollTrigger.addEventListener('refreshInit', medir);
+    }
+
+    function actualizarBoton(desarmada) {
+      toggle.setAttribute('aria-pressed', desarmada);
+      toggle.querySelector('span').textContent = desarmada ? 'Armar' : 'Desarmar';
+    }
+
+    // Tocar la hamburguesa o el botón: lleva el scroll al inicio o al final de la animación
+    function alternar() {
+      if (!st) return;
+      const desarmada = st.progress > .5;
+      window.scrollTo({ top: desarmada ? st.start : st.end, behavior: 'smooth' });
+    }
+    burger.addEventListener('click', alternar);
+    toggle.addEventListener('click', alternar);
+  </script>
+</body>
+</html>
