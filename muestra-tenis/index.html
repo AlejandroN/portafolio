@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
   <link rel="preload" as="fetch" href="modelo/tenis.glb" crossorigin>
+  <script>
+    // Modo vitrina para vistas previas: solo el tenis, del lado derecho
+    if (new URLSearchParams(location.search).get('vista') === 'mini') document.documentElement.classList.add('mini');
+  </script>
   <style>
     :root {
       --bg: #f4ede3;
@@ -111,6 +115,11 @@
       .paso h1, .paso h2 { font-size: clamp(2.2rem, 11vw, 3.4rem); margin: 6px 0 10px; }
       .compra { grid-template-columns: 1fr; }
     }
+    /* Modo vitrina (vista previa en la página de Alewox) */
+    .mini .texto, .mini .arrastra { visibility: hidden; }
+    .mini .stage { grid-template-columns: 1fr 1fr; align-items: start; padding-top: 110px; }
+    .mini .visor { height: 560px; }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition: none !important; animation: none !important; }
     }
