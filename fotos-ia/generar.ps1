@@ -99,6 +99,18 @@ $Lista = @(
     @{ id = 'consultorio-detalle';  pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
        prompt = "Stethoscope, tablet and notebook on a clean white desk in a doctor's office, soft daylight, $Estilo" }
 
+    # Generador de muestras de Alewox (barbería)
+    @{ id = 'barberia-hero'; pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 1000
+       prompt = "Modern barbershop interior with vintage leather barber chairs, large mirrors, warm Edison bulbs, dark wood and black tiles, nobody inside, no signs, no lettering anywhere, $Estilo" }
+    @{ id = 'barberia-1';    pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Close-up of a barber giving a clean skin fade haircut with electric clippers to a young man, barbershop background blurred, warm light, $Estilo" }
+    @{ id = 'barberia-2';    pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Close-up of a barber shaping a man's beard with a straight razor, hot towel on his shoulder, warm light, $Estilo" }
+    @{ id = 'barberia-3';    pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Side profile of a man with a fresh fade haircut and neatly groomed beard in a barber chair, barbershop background blurred, warm light, $Estilo" }
+    @{ id = 'barberia-4';    pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
+       prompt = "Barber tools neatly arranged on a dark wooden counter: clippers, scissors, combs, straight razor and a brush, warm light, shallow depth of field, no lettering, $Estilo" }
+
     # Página de Alewox: fotos cinematográficas
     @{ id = 'alewox-taqueria';  pagina = '..\mi-sitio'; ar = '16:9'; ancho = 1920
        prompt = "Full-frame cinematic photo at night of a Mexican taquero without hat, wearing a plain black t-shirt, slicing marinated al pastor pork from a vertical trompo spit with a long knife, pineapple on top, glowing grill and smoke, warm orange light on his face and hands, dark background with soft bokeh, moody, full bleed image without black bars, plain clothes, no signs, no lettering anywhere, $Estilo" }
