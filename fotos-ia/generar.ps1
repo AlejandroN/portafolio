@@ -98,6 +98,24 @@ $Lista = @(
        prompt = "Calm waiting room of a modern clinic with comfortable armchairs, plants and natural light, nobody inside, $Estilo" }
     @{ id = 'consultorio-detalle';  pagina = '..\mi-sitio\muestra'; ar = '4:3'; ancho = 700
        prompt = "Stethoscope, tablet and notebook on a clean white desk in a doctor's office, soft daylight, $Estilo" }
+
+    # Página de Alewox: fotos cinematográficas
+    @{ id = 'alewox-taqueria';  pagina = '..\mi-sitio'; ar = '16:9'; ancho = 1920
+       prompt = "Full-frame cinematic photo at night of a Mexican taquero without hat, wearing a plain black t-shirt, slicing marinated al pastor pork from a vertical trompo spit with a long knife, pineapple on top, glowing grill and smoke, warm orange light on his face and hands, dark background with soft bokeh, moody, full bleed image without black bars, plain clothes, no signs, no lettering anywhere, $Estilo" }
+    @{ id = 'alewox-barberia';  pagina = '..\mi-sitio'; ar = '16:9'; ancho = 1920
+       prompt = "Cinematic film still inside a modern barbershop at dusk, a barber carefully trimming a client's beard, warm tungsten lights, dark walls, mirror reflections, moody and elegant, shallow depth of field, no lettering anywhere, $Estilo" }
+    @{ id = 'alewox-taller';    pagina = '..\mi-sitio'; ar = '16:9'; ancho = 1920
+       prompt = "Cinematic wide film still of an auto repair shop at golden hour in the Sonoran desert, a car raised on a lift, a mechanic as a silhouette, low sun flaring through the open garage door, dust floating in the warm light, moody, no lettering anywhere, $Estilo" }
+    @{ id = 'alewox-cafe';      pagina = '..\mi-sitio'; ar = '16:9'; ancho = 1920
+       prompt = "Cinematic film still of a young Mexican woman, owner of a small coffee shop, smiling behind the counter while looking at her smartphone, phone screen not visible, warm golden hour light through the window, espresso machine, shallow depth of field, no lettering anywhere, $Estilo" }
+    @{ id = 'alewox-desierto';  pagina = '..\mi-sitio'; ar = '21:9'; ancho = 1920
+       prompt = "Cinematic wide landscape of a Sonoran desert city at blue hour seen from a hill, warm city lights glowing in the valley, saguaro cactus silhouettes in the foreground, mountains on the horizon, deep blue and orange tones, $Estilo" }
+    @{ id = 'alewox-estudio';   pagina = '..\mi-sitio'; ar = '3:4'; ancho = 900
+       prompt = "Dark moody wooden desk at night with an open laptop seen from the side, its screen glowing with soft abstract orange and blue gradient shapes, a coffee cup, a pair of glasses and a smartphone face down, warm orange desk lamp, plant, cinematic, shallow depth of field, no paper, no notebook, no words, no letters anywhere, $Estilo" }
+    @{ id = 'alewox-celular';   pagina = '..\mi-sitio'; ar = '3:4'; ancho = 900
+       prompt = "Close-up of a hand holding a smartphone inside a busy Mexican restaurant at night, screen glowing softly and out of focus, warm bokeh lights in the background, cinematic, no readable text, $Estilo" }
+    @{ id = 'alewox-mostrador'; pagina = '..\mi-sitio'; ar = '3:4'; ancho = 900
+       prompt = "Small plain black acrylic stand holding a white card with only a QR code printed on it, on the wooden counter of a cozy Mexican restaurant, warm lights, shallow depth of field, cinematic, the card and the stand have absolutely no words, no letters, no logos, $Estilo" }
 )
 
 function Invocar-Fal($cuerpo) {
