@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El cuaderno de Alewox | Portafolio</title>
+<meta name="description" content="El portafolio de Alewox como un cuaderno sobre la mesa: cada hoja es una página web real que puedes usar. Páginas web para negocios, de Hermosillo para el mundo.">
+<meta name="theme-color" content="#0c0b0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* El cuaderno de Alewox sobre una mesa (fotos con IA en img/).
+   Cada .hoja tiene su frente (página derecha) y su vuelta (página izquierda); en cada página de proyecto va la página web real, viva, en un iframe.
+   Compu: cada 100vh de scroll voltea una hoja. Celular: se ve una página a la vez; un paso voltea la hoja y el siguiente pasa a la página de al lado. */
+:root {
+  --fondo: #0c0b0a; --crema: #f4efe8; --gris: #a39b92; --naranja: #ff7a3d;
+  --lapiz: #2b2622; --tenue: #8a7d70; --rojo: #c2553a; --renglon: rgba(70, 110, 160, .15);
+  --h: min(80svh, 62vw); --w: calc(var(--h) / 1.38);
+}
+@media (max-width: 720px) { :root { --h: min(74svh, 128vw); } }
+* { margin: 0; box-sizing: border-box; }
+html { scroll-snap-type: y proximity; background: var(--fondo); }
+body { background: var(--fondo); color: var(--crema); font-family: 'Inter Tight', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.serif { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; }
+.mano { font-family: 'Caveat', cursive; font-weight: 500; }
+
+.paso { height: 100svh; scroll-snap-align: start; }
+.escena { position: fixed; inset: 0; overflow: hidden; background: #1a120c url(img/mesa.jpg) center / cover no-repeat; }
+.escena::before { content: ""; position: absolute; inset: 0; background: radial-gradient(75% 70% at 48% 50%, transparent 45%, rgba(8, 5, 3, .55)); pointer-events: none; }
+@media (max-width: 720px) { .escena { background-image: url(img/mesa-cel.jpg); } }
+.arriba { position: absolute; z-index: 300; left: 22px; right: 22px; top: 18px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; text-shadow: 0 1px 8px rgba(0, 0, 0, .7); }
+.logo { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; letter-spacing: -.03em; text-decoration: none; }
+.logo b { color: var(--naranja); }
+.arriba .ir { color: #d8cfc5; text-decoration: none; }
+
+/* el libro */
+.mesa { position: absolute; inset: 0; perspective: 2400px; }
+.libro { position: absolute; left: 50%; top: 48%; width: calc(var(--w) * 2); height: var(--h); transform: translate(calc(-50% + var(--corre, 0px)), -50%); transform-style: preserve-3d; font-size: max(12.5px, calc(var(--w) * .034)); }
+.sombra { position: absolute; left: 50%; right: 0; top: 1%; bottom: -1%; background: rgba(0, 0, 0, .7); filter: blur(22px); border-radius: 18px; transform: translate(18px, 24px) translateZ(-2px); }
+.base { position: absolute; top: 0; left: 50%; width: var(--w); height: 100%; }
+.hoja { position: absolute; top: 0; left: 50%; width: var(--w); height: 100%; transform-origin: left center; transform-style: preserve-3d; will-change: transform; }
+.cara { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.cara.vuelta { transform: rotateY(180deg); }
+.cara::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--s, 0); z-index: 5; }
+.cara.frente::after { background: linear-gradient(90deg, rgba(0, 0, 0, .55), rgba(0, 0, 0, .1)); }
+.cara.vuelta::after { background: linear-gradient(270deg, rgba(0, 0, 0, .5), rgba(0, 0, 0, .08)); }
+
+/* papel con textura real (img/papel.jpg), renglones y margen rojo */
+.papel { background: repeating-linear-gradient(transparent 0 calc(var(--w) * .062 - 1px), var(--renglon) calc(var(--w) * .062 - 1px) calc(var(--w) * .062)), linear-gradient(90deg, rgba(90, 60, 30, .28), rgba(90, 60, 30, 0) 10%), url(img/papel.jpg) center / cover; color: var(--lapiz); padding: 9% 8% 8% 15%; border-radius: 0 10px 10px 0; box-shadow: inset 0 0 40px rgba(120, 85, 45, .14); }
+.papel::before { content: ""; position: absolute; top: 0; bottom: 0; left: 10.5%; width: 1.5px; background: rgba(214, 90, 70, .35); }
+.vuelta.papel { background: repeating-linear-gradient(transparent 0 calc(var(--w) * .062 - 1px), var(--renglon) calc(var(--w) * .062 - 1px) calc(var(--w) * .062)), linear-gradient(270deg, rgba(90, 60, 30, .3), rgba(90, 60, 30, 0) 10%), url(img/papel.jpg) center / cover; border-radius: 10px 0 0 10px; padding: 9% 15% 8% 8%; }
+.vuelta.papel::before { left: auto; right: 10.5%; }
+.num { position: absolute; bottom: 3%; font-size: .85em; color: var(--tenue); letter-spacing: .08em; }
+.frente .num { right: 8%; } .vuelta .num { left: 8%; }
+
+/* portada de piel (img/pasta.jpg) */
+.pasta { background: radial-gradient(120% 90% at 15% 5%, rgba(255, 200, 150, .14), transparent 55%), url(img/pasta.jpg) center / cover; border-radius: 6px 14px 14px 6px; box-shadow: inset 12px 0 0 #22180f, inset 15px 0 0 rgba(255, 255, 255, .05); padding: 16% 13% 0 15%; color: var(--crema); }
+.pasta .liga { position: absolute; top: 0; bottom: 0; right: 9%; width: 4.2%; background: linear-gradient(90deg, #d9602b, var(--naranja) 40%, #e96a33); box-shadow: 0 0 10px rgba(0, 0, 0, .4); }
+.pasta .etiqueta { position: relative; background: url(img/papel.jpg) center / cover; color: var(--lapiz); padding: 9% 9% 8%; border-radius: 4px; transform: rotate(-1.6deg); box-shadow: 0 8px 18px rgba(0, 0, 0, .4); }
+.pasta small { display: block; font-size: .78em; letter-spacing: .18em; text-transform: uppercase; color: #7a6f63; }
+.pasta h1 { font-size: 2.6em; line-height: .98; letter-spacing: -.035em; margin-top: .25em; }
+.pasta .etiqueta .serif { display: block; font-size: 1.7em; color: var(--rojo); margin-top: .2em; }
+.pasta .pie { position: absolute; left: 15%; right: 20%; bottom: 7%; font-size: .82em; letter-spacing: .16em; color: rgba(244, 239, 232, .55); text-transform: uppercase; }
+.pasta .marca { position: absolute; left: 15%; bottom: 13%; font-weight: 800; font-size: 1.25em; letter-spacing: -.03em; }
+.pasta .marca b { color: var(--naranja); }
+
+/* textos */
+.hoja h2, .base h2 { font-size: 2.3em; line-height: 1; letter-spacing: -.035em; }
+.giro { font-size: .78em; letter-spacing: .16em; text-transform: uppercase; color: var(--tenue); margin-top: .7em; }
+.grande { font-size: 5.5em; line-height: .8; color: var(--rojo); }
+.texto-mano { font-size: 1.75em; line-height: 1.15; margin-top: .6em; }
+.lista { list-style: none; padding: 0; margin-top: 1.1em; }
+.lista li { display: flex; gap: .6em; align-items: center; font-size: 1.12em; line-height: 1.85; }
+.lista li::before { content: ""; width: .95em; height: .95em; flex: none; border: 2px solid var(--lapiz); border-radius: 3px; background: linear-gradient(135deg, transparent 44%, var(--rojo) 44% 58%, transparent 58%); }
+.ver { display: inline-block; margin-top: 1em; border: 2px solid var(--lapiz); border-radius: 99px; padding: .35em 1em; font-weight: 800; font-size: .95em; text-decoration: none; background: rgba(255, 255, 255, .35); }
+.ver:hover { background: var(--lapiz); color: #f7f0e3; }
+.indice { list-style: none; padding: 0; margin-top: 1.2em; }
+.indice li { display: flex; align-items: baseline; gap: .5em; font-size: 1.15em; line-height: 2; }
+.indice li span { color: var(--rojo); font-weight: 800; font-size: .85em; width: 1.7em; }
+.indice li i { flex: 1; border-bottom: 2px dotted rgba(43, 38, 34, .3); transform: translateY(-.3em); }
+.indice button { all: unset; cursor: pointer; }
+.indice button:hover { color: var(--rojo); }
+.planes li { font-size: 1.05em; line-height: 1.6; margin-bottom: .45em; align-items: flex-start; }
+.planes li::before { margin-top: .35em; }
+.planes b { display: block; }
+.planes small { color: var(--tenue); font-size: .88em; }
+.wa { display: inline-flex; align-items: center; gap: .5em; margin-top: 1em; background: #25d366; color: #06210f; border-radius: 99px; padding: .55em 1.1em; font-weight: 800; text-decoration: none; box-shadow: 0 6px 14px rgba(37, 211, 102, .3); }
+
+/* página de proyecto: la página web viva ocupa casi toda la hoja */
+.web .cabeza { position: absolute; left: 13%; right: 6%; top: 4.2%; display: flex; justify-content: space-between; align-items: baseline; gap: .6em; }
+.vuelta.web .cabeza { left: 6%; right: 13%; }
+.web .cabeza .mano { font-size: 1.55em; color: var(--rojo); line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.web .cabeza small { font-size: .7em; letter-spacing: .12em; text-transform: uppercase; color: var(--tenue); white-space: nowrap; }
+.web .sello { font-size: .9em; border: 1.5px solid currentColor; border-radius: 5px; padding: .1em .45em; font-weight: 800; letter-spacing: .1em; color: var(--rojo); display: inline-block; transform: rotate(-3deg); }
+.web .sello.muestra { color: var(--tenue); }
+.pantalla { position: absolute; left: 13%; right: 6%; top: 11%; bottom: 7.5%; border-radius: 6px; overflow: hidden; background: #111 center top / cover no-repeat; box-shadow: 0 1px 0 rgba(255, 255, 255, .5), 0 6px 16px rgba(60, 35, 15, .28), 0 0 0 1px rgba(43, 38, 34, .18); }
+.vuelta .pantalla { left: 6%; right: 13%; }
+.pantalla iframe { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; background: #fff; pointer-events: none; }
+.pantalla.activa iframe { pointer-events: auto; }
+.pantalla .usar { all: unset; position: absolute; inset: 0; z-index: 2; cursor: pointer; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0 0 5% 5%; background: linear-gradient(transparent 62%, rgba(0, 0, 0, .35)); }
+.pantalla .usar span { background: rgba(20, 17, 15, .82); color: var(--crema); font-size: .82em; font-weight: 700; padding: .5em .9em; border-radius: 99px; }
+.pantalla.activa .usar { display: none; }
+.web .abajo { position: absolute; left: 13%; right: 6%; bottom: 2.2%; display: flex; justify-content: space-between; align-items: center; font-size: .82em; color: var(--tenue); }
+.vuelta.web .abajo { left: 6%; right: 13%; }
+.web .abajo a { color: var(--rojo); font-weight: 700; text-decoration: none; }
+
+/* controles */
+.controles { position: absolute; z-index: 300; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; background: rgba(20, 17, 15, .72); border: 1px solid rgba(244, 239, 232, .12); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 99px; padding: 6px; font-size: 14px; }
+.controles button { all: unset; cursor: pointer; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgba(244, 239, 232, .08); }
+.controles button:hover { background: rgba(255, 122, 61, .25); }
+.controles button:focus-visible { outline: 2px solid var(--naranja); }
+.controles button[disabled] { opacity: .3; cursor: default; }
+.controles span { min-width: 160px; text-align: center; color: #e6ded4; font-weight: 600; }
+.pista { position: absolute; z-index: 300; left: 50%; bottom: 74px; transform: translateX(-50%); color: #e6ded4; text-shadow: 0 1px 8px rgba(0, 0, 0, .8); font-size: 13px; letter-spacing: .06em; transition: opacity .4s; white-space: nowrap; }
+.pista.fuera { opacity: 0; }
+@media (max-width: 720px) {
+  .controles span { min-width: 120px; font-size: 13px; }
+  .libro { top: 47%; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-snap-type: y mandatory; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="escena">
+    <div class="arriba">
+      <a class="logo" href="https://alewox.com/"><svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="1" x2=".6" y2="0"><stop offset="0" stop-color="#ff6a33"/><stop offset="1" stop-color="#ffb06a"/></linearGradient></defs><polygon points="6,98 30,98 64,6 40,6" fill="url(#lg)"/><polygon points="52,38 64,6 98,98 74,98" fill="#f4efe8"/></svg><span>alewox<b>.</b></span></a>
+      <a class="ir" href="https://alewox.com/">alewox.com</a>
+    </div>
+    <div class="mesa"><div class="libro" id="libro"><div class="sombra" id="sombra"></div></div></div>
+    <p class="pista" id="pista">Haz scroll para abrir el cuaderno</p>
+    <nav class="controles" aria-label="Hojas del cuaderno">
+      <button type="button" id="atras" aria-label="Hoja anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <span id="donde" aria-live="polite">Portada</span>
+      <button type="button" id="adelante" aria-label="Hoja siguiente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    </nav>
+  </div>
+  <div id="pasos"></div>
+</main>
+
+<script>
+const WHATS = '526624002958';
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ANCHO_WEB = 390; // cada página web se muestra como en un celular
+
+// solo K-BAR es cliente real; las demás son muestras hechas por Alewox
+const PROYECTOS = [
+  { nombre: 'K-BAR', giro: 'Eventos', real: true, url: 'https://alejandron.github.io/kbar-landing/', img: 'kbar.jpg' },
+  { nombre: 'Brasa Burger', giro: 'Restaurante', url: '../muestra-hamburguesa/', img: 'brasa.jpg' },
+  { nombre: 'Duna Runner', giro: 'Tienda 3D', url: '../muestra-tenis/', img: 'duna.jpg' },
+  { nombre: 'Taquería La Brasa', giro: 'Restaurante', url: '../taqueria/', img: 'taqueria.jpg' },
+  { nombre: 'Bella Luna', giro: 'Estética', url: '../estetica/', img: 'estetica.jpg' },
+  { nombre: 'Taller Torque', giro: 'Automotriz', url: '../taller/', img: 'taller.jpg' },
+];
+const PLANES = [
+  ['Básico', 'Lo que necesitas para salir a flote en internet', 55],
+  ['Esencial', 'Lo que necesitas para verte profesional en internet', 85],
+  ['PRO', 'Lo que necesitas para vender más en internet', 115],
+  ['Élite', 'Todo lo que necesitas', 199],
+];
+
+// una página de proyecto: la página web real dentro de la hoja
+const web = (p, i, lado, num) => `<div class="cara ${lado} papel web">
+  <div class="cabeza"><span class="mano">0${i + 1} · ${esc(p.nombre)}</span><small>${esc(p.giro)} <span class="sello${p.real ? '' : ' muestra'}">${p.real ? 'Cliente real' : 'Muestra'}</span></small></div>
+  <div class="pantalla" data-url="${p.url}" style="background-image:url(img/${p.img})"><button type="button" class="usar"><span>Toca para usar la página</span></button></div>
+  <div class="abajo"><span>${num}</span><a href="${p.url}" target="_blank" rel="noopener">Abrir en grande ↗</a></div></div>`;
+const portada = `<div class="cara frente pasta"><div class="liga"></div>
+  <div class="etiqueta"><small>Portafolio · 2026</small><h1>El cuaderno de Alewox</h1><span class="serif">Páginas que venden</span></div>
+  <div class="marca">alewox<b>.</b></div><div class="pie">Hermosillo · para el mundo</div></div>`;
+const intro = `<div class="cara vuelta papel"><div class="mano grande" style="font-size:3.6em">Hola,</div>
+  <p class="mano texto-mano">soy Alejandro. Hago páginas web para negocios desde Hermosillo, para aquí y para cualquier parte.</p>
+  <p class="mano texto-mano">En cada hoja de este cuaderno hay una página web de verdad: tócala y úsala.</p>
+  <p class="mano texto-mano" style="color:var(--rojo)">Voltea la hoja.</p></div>`;
+const indice = `<div class="cara frente papel"><h2>Índice</h2><div class="giro">Lo que hay en este cuaderno</div>
+  <ul class="indice">${PROYECTOS.map((p, i) => `<li><span>0${i + 1}</span><button type="button" data-ir="${i + 3}">${esc(p.nombre)}</button><i></i></li>`).join('')}
+  <li><span>07</span><button type="button" data-ir="9">¿Y tu negocio?</button><i></i></li></ul><span class="num">1</span></div>`;
+const cierre = `<div class="cara vuelta papel"><div class="mano grande">07</div><h2 style="margin-top:.35em">¿Y tu negocio?</h2>
+  <div class="giro">La siguiente hoja puede ser la tuya</div>
+  <p class="mano texto-mano" style="color:var(--rojo);font-size:2.2em;margin-top:1em">Tu página, lista desde 24 horas.</p>
+  <p class="mano texto-mano">Antes de pagar puedes ver tu muestra gratis en alewox.com.</p><span class="num">8</span></div>`;
+const planes = `<div class="cara frente papel" style="border-radius:0 10px 10px 0"><h2>Los planes</h2><div class="giro">Pago de inicio en dólares · meses incluidos</div>
+  <ul class="lista planes">${PLANES.map(([n, f, p]) => `<li><span><b>${n} · $${p} USD</b><small>${f}</small></span></li>`).join('')}</ul>
+  <a class="wa" href="https://wa.me/${WHATS}?text=${encodeURIComponent('Hola Alejandro, vi tu cuaderno y quiero una página para mi negocio')}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Escríbeme por WhatsApp</a>
+  <div><a class="ver" href="https://alewox.com/" target="_blank" rel="noopener">Ver alewox.com →</a></div><span class="num">9</span></div>`;
+
+// hojas (frente = derecha, vuelta = izquierda de la siguiente doble página)
+const P = PROYECTOS;
+const HOJAS = [
+  portada + intro,
+  indice + web(P[0], 0, 'vuelta', 2),
+  web(P[1], 1, 'frente', 3) + web(P[2], 2, 'vuelta', 4),
+  web(P[3], 3, 'frente', 5) + web(P[4], 4, 'vuelta', 6),
+  web(P[5], 5, 'frente', 7) + cierre,
+];
+const N = HOJAS.length;
+// páginas en orden de lectura: portada, y luego izquierda/derecha de cada doble página
+const PAGINAS = ['Portada', 'Hola', 'Índice', ...P.map((p) => p.nombre), '¿Y tu negocio?', 'Los planes'];
+
+const libro = document.getElementById('libro');
+libro.insertAdjacentHTML('beforeend', `<div class="base">${planes}</div>` + HOJAS.map((h) => `<div class="hoja">${h}</div>`).join(''));
+const hojas = [...libro.querySelectorAll('.hoja')];
+const base = libro.querySelector('.base');
+const pantallas = [...libro.querySelectorAll('.pantalla')];
+const celular = matchMedia('(max-width: 720px)');
+const pasosTotales = () => (celular.matches ? 2 * N : N);
+const pasos = document.getElementById('pasos');
+const armarPasos = () => { pasos.innerHTML = Array.from({ length: pasosTotales() + 1 }, () => '<div class="paso"></div>').join(''); };
+armarPasos();
+
+// cada página web: un iframe de 390 px de ancho escalado al tamaño de la hoja; se carga solo cuando su hoja está cerca
+function ajustar(pa) {
+  const f = pa.querySelector('iframe');
+  if (!f) return;
+  const k = pa.clientWidth / ANCHO_WEB;
+  f.style.width = `${ANCHO_WEB}px`;
+  f.style.height = `${pa.clientHeight / k}px`;
+  f.style.transform = `scale(${k})`;
+}
+function cargar(pa) {
+  if (pa.querySelector('iframe')) return;
+  const f = document.createElement('iframe');
+  const u = pa.dataset.url;
+  // abierto desde la compu (file://) las carpetas no abren solas su index.html
+  f.src = location.protocol === 'file:' && u.endsWith('/') && !u.startsWith('http') ? `${u}index.html` : u;
+  f.title = 'Página web de muestra';
+  pa.prepend(f);
+  ajustar(pa);
+}
+pantallas.forEach((pa) => pa.querySelector('.usar').addEventListener('click', () => {
+  pantallas.forEach((o) => o.classList.remove('activa'));
+  cargar(pa); pa.classList.add('activa');
+}));
+// al tocar fuera de la página web, el scroll vuelve a voltear hojas
+addEventListener('pointerdown', (e) => { if (!e.target.closest('.pantalla')) pantallas.forEach((o) => o.classList.remove('activa')); });
+
+const suave = (t) => t * t * (3 - 2 * t);
+const donde = document.getElementById('donde'), pista = document.getElementById('pista');
+const atras = document.getElementById('atras'), adelante = document.getElementById('adelante'), sombra = document.getElementById('sombra');
+const prueba = parseFloat(new URLSearchParams(location.search).get('hoja')); // ?hoja=2.5 muestra esa posición sin scroll (para revisar y grabar)
+let ultimo = -1;
+
+function dibujar() {
+  const total = pasosTotales();
+  const q = Math.min(Math.max(prueba >= 0 ? prueba : scrollY / innerHeight, 0), total);
+  const w = libro.offsetWidth / 2;
+  let p, corre, pagina;
+  if (celular.matches) {
+    // celular: de una página derecha se voltea a la izquierda de la siguiente, y luego se pasa a su derecha
+    const k = Math.floor(q / 2), r = q - 2 * k;
+    if (r <= 1) { p = k + r; corre = -w / 2 + w * suave(r); } else { p = k + 1; corre = w / 2 - w * suave(r - 1); }
+    if (k >= N) { p = N; corre = -w / 2; }
+    pagina = Math.round(q);
+  } else {
+    p = q;
+    corre = -w / 2 * (1 - suave(Math.min(p, 1)));
+    const d = Math.round(p);
+    pagina = d === 0 ? 0 : 2 * d;
+  }
+  libro.style.setProperty('--corre', `${corre}px`);
+  sombra.style.left = celular.matches ? '0%' : `${50 - 50 * suave(Math.min(p, 1))}%`;
+  hojas.forEach((h, i) => {
+    const t = suave(Math.min(Math.max(p - i, 0), 1));
+    h.style.transform = `rotateY(${-180 * t}deg)`;
+    h.style.zIndex = t < .5 ? 100 - i : 100 + i;
+    h.style.setProperty('--s', (Math.sin(t * Math.PI) * .45).toFixed(3));
+  });
+  base.style.visibility = p > N - 1.02 ? 'visible' : 'hidden';
+  const d = Math.round(p);
+  if (d !== ultimo) {
+    ultimo = d;
+    // se cargan las páginas web de la doble página actual y de las vecinas
+    hojas.forEach((h, i) => { if (i >= d - 2 && i <= d) h.querySelectorAll('.pantalla').forEach(cargar); });
+  }
+  donde.textContent = celular.matches ? PAGINAS[pagina] : (pagina === 0 ? 'Portada' : `${PAGINAS[pagina - 1]} · ${PAGINAS[pagina]}`);
+  atras.disabled = q < .5; adelante.disabled = q > total - .5;
+  pista.classList.toggle('fuera', q > .15);
+}
+const actual = () => Math.round(scrollY / innerHeight);
+const ir = (k) => scrollTo({ top: Math.min(Math.max(k, 0), pasosTotales()) * innerHeight, behavior: 'smooth' });
+atras.addEventListener('click', () => ir(actual() - 1));
+adelante.addEventListener('click', () => ir(actual() + 1));
+// el índice lleva a la página del proyecto (en celular cuenta páginas; en compu, dobles páginas)
+libro.addEventListener('click', (e) => { const b = e.target.closest('[data-ir]'); if (b) { const pag = +b.dataset.ir; ir(celular.matches ? pag : Math.ceil(pag / 2)); } });
+addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') { e.preventDefault(); ir(actual() + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); ir(actual() - 1); }
+});
+let pendiente = false;
+addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(() => { pendiente = false; dibujar(); }); } }, { passive: true });
+addEventListener('resize', () => { pantallas.forEach(ajustar); dibujar(); });
+celular.addEventListener('change', () => { armarPasos(); dibujar(); });
+if (celular.matches) pista.textContent = 'Desliza hacia arriba para abrir';
+dibujar();
+</script>
+</body>
+</html>
