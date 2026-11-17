@@ -276,6 +276,7 @@ function dibujar() {
   donde.textContent = celular.matches ? PAGINAS[pagina] : (pagina === 0 ? 'Portada' : `${PAGINAS[pagina - 1]} · ${PAGINAS[pagina]}`);
   atras.disabled = q < .5; adelante.disabled = q > total - .5;
   pista.classList.toggle('fuera', q > .15);
+  pista.textContent = celular.matches ? 'Desliza hacia arriba para abrir' : 'Haz scroll para abrir el cuaderno';
 }
 const actual = () => Math.round(scrollY / innerHeight);
 const ir = (k) => scrollTo({ top: Math.min(Math.max(k, 0), pasosTotales()) * innerHeight, behavior: 'smooth' });
@@ -291,7 +292,6 @@ let pendiente = false;
 addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(() => { pendiente = false; dibujar(); }); } }, { passive: true });
 addEventListener('resize', () => { pantallas.forEach(ajustar); dibujar(); });
 celular.addEventListener('change', () => { armarPasos(); dibujar(); });
-if (celular.matches) pista.textContent = 'Desliza hacia arriba para abrir';
 dibujar();
 </script>
 </body>
