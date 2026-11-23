@@ -6,6 +6,10 @@
 <title>El cuaderno de Alewox | Portafolio</title>
 <meta name="description" content="El portafolio de Alewox como un cuaderno sobre la mesa: cada hoja es una página web real que puedes usar. Páginas web para negocios, de Hermosillo para el mundo.">
 <meta name="theme-color" content="#0c0b0a">
+<script>
+// abierto dentro de alewox.com (?en-alewox): alewox.com ya pone su botón de volver, así que aquí no va la barra de arriba
+if (new URLSearchParams(location.search).has('en-alewox')) document.documentElement.classList.add('en-alewox');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;500;600;800&display=swap" rel="stylesheet">
@@ -34,6 +38,9 @@ a { color: inherit; }
 .logo { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; letter-spacing: -.03em; text-decoration: none; }
 .logo b { color: var(--naranja); }
 .arriba .ir { color: #d8cfc5; text-decoration: none; }
+.en-alewox .arriba { display: none; }
+.en-alewox { scrollbar-width: none; }
+.en-alewox::-webkit-scrollbar { display: none; }
 
 /* el libro */
 .mesa { position: absolute; inset: 0; perspective: 2400px; }
